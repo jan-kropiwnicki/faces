@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search users</title>
+</head>
+<body>
+    <a href="{% url 'index' %}">Go back</a>
+    <p>All users on Facebook 2:</p>
+    <ul>
+    {% for person in users %}
+        <li><a href="#">{{ person.user.first_name }} {{ person.user.last_name }} @{{ person.user.username }}</a></li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
