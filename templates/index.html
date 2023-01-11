@@ -9,6 +9,7 @@
         <p>Welcome {{ user.username }}!
             <a href="{% url 'logout' %}">Log out</a>
             <a href="{% url 'create_post' %}">Create post</a>
+            <a href="{% url 'search_users' %}">Search users</a>
         </p>
         {% if post_list %}
             <p>Your posts:</p>
@@ -17,7 +18,8 @@
         {% endif %}
         {% for post in post_list %}
             <hr>
-            <small>Published on {{ post.0.date.date }} by {{ post.0.author.user.username }}</small>
+            <small>Published on {{ post.0.date.date }} by <a href="#">{{ post.0.author.user.first_name }} {{ post.0.author.user.last_name }}
+                @{{ post.0.author.user.username }}</a></small>
             <p>
             {% for line in post.1 %}
                 {{ line }}<br>

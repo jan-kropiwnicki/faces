@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Post
+from .models import Post, Person
 from datetime import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -22,3 +22,8 @@ def submit_post(request):
     post = Post(content=content, author=author, date=date, likes=likes)
     post.save()
     return HttpResponseRedirect(reverse("index"))
+
+
+def search_users(request):
+    users = Person.objects.all()
+    return render(request, "search-users.html", {"users": users})
