@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Facebook 2</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <p>Welcome {{ user.username }}! <a href="{% url 'logout' %}">Log out</a></p>
+    {% else %}
+        <a href="{% url 'login' %}">Log in to Facebook 2</a>
+    {% endif %}
+</body>
+</html>
