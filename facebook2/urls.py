@@ -17,8 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import TemplateView
 
+import facebook2_app.views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include("django.contrib.auth.urls")),
-    path('', TemplateView.as_view(template_name="index.html")),
+    path('', facebook2_app.views.index, name="index"),
+    path('create_post/', TemplateView.as_view(template_name="create-post.html"), name="create_post"),
+    path('submit_post/', facebook2_app.views.submit_post, name="submit_post"),
 ]

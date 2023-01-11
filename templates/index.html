@@ -6,7 +6,25 @@
 </head>
 <body>
     {% if user.is_authenticated %}
-        <p>Welcome {{ user.username }}! <a href="{% url 'logout' %}">Log out</a></p>
+        <p>Welcome {{ user.username }}!
+            <a href="{% url 'logout' %}">Log out</a>
+            <a href="{% url 'create_post' %}">Create post</a>
+        </p>
+        {% if post_list %}
+            <p>Your posts:</p>
+        {% else %}
+            <p>You have no posts.</p>
+        {% endif %}
+        {% for post in post_list %}
+            <hr>
+            <small>Published on {{ post.0.date.date }} by {{ post.0.author.user.username }}</small>
+            <p>
+            {% for line in post.1 %}
+                {{ line }}<br>
+            {% endfor %}
+            </p>
+            <p>{{ post.0.likes }} likes</p>
+        {% endfor %}
     {% else %}
         <a href="{% url 'login' %}">Log in to Facebook 2</a>
     {% endif %}
