@@ -9,7 +9,7 @@
     <p>All users on Facebook 2:</p>
     <ul>
     {% for person in users %}
-        <li><a href="#">{{ person.user.first_name }} {{ person.user.last_name }} @{{ person.user.username }}</a></li>
+        <li><a href="{% url 'user' person.user.username %}">{{ person.user.first_name }} {{ person.user.last_name }}</a> @{{ person.user.username }}</li>
     {% endfor %}
     </ul>
 </body>

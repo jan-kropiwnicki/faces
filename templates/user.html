@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ user.first_name }} {{ user.last_name }}'s profile on Facebook 2</title>
+</head>
+<body>
+    <a href="{% url 'index' %}">Go home</a>
+    <h2>{{ user.first_name }} {{ user.last_name }} @{{ user.username }}</h2>
+    {% if post_list %}
+        <p>Their posts:</p>
+    {% else %}
+        <p>This user has no posts.</p>
+    {% endif %}
+    {% for post in post_list %}
+        <hr>
+        <p>Published on {{ post.0.date.date }} by <a href="{% url 'user' post.0.author.user.username %}">
+            {{ post.0.author.user.first_name }} {{ post.0.author.user.last_name }}</a> @{{ post.0.author.user.username }}</p>
+        <p>
+        {% for line in post.1 %}
+            {{ line }}<br>
+        {% endfor %}
+        </p>
+        <p>{{ post.0.likes }} likes</p>
+    {% endfor %}
+
+</body>
+</html>

@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Post, Person
+from django.contrib.auth.models import User
 from datetime import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -27,3 +28,12 @@ def submit_post(request):
 def search_users(request):
     users = Person.objects.all()
     return render(request, "search-users.html", {"users": users})
+
+
+def user(request, username):
+    viewed_user = get_object_or_404(User, username=username)
+    post_list = []
+    post_list_plain = viewed_user.person.post_set.order_by("-date")
+    for post in post_list_plain:
+        post_list += [[post, post.content.split("\r\n")]]
+    return render(request, "user.html", {"user": viewed_user, "post_list": post_list})

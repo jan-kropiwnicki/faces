@@ -18,8 +18,8 @@
         {% endif %}
         {% for post in post_list %}
             <hr>
-            <small>Published on {{ post.0.date.date }} by <a href="#">{{ post.0.author.user.first_name }} {{ post.0.author.user.last_name }}
-                @{{ post.0.author.user.username }}</a></small>
+            <p>Published on {{ post.0.date.date }} by <a href="#">{{ post.0.author.user.first_name }} {{ post.0.author.user.last_name }}</a>
+                @{{ post.0.author.user.username }}</p>
             <p>
             {% for line in post.1 %}
                 {{ line }}<br>
