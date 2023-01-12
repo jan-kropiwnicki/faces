@@ -68,3 +68,11 @@ def reject_request(request, username):
             request.user.requestprofile.friend_requests.remove(person)
             break
     return HttpResponseRedirect(reverse("index"))
+
+
+def end_friendship(request, username):
+    for person in request.user.person.friends.all():
+        if person.user.username == username:
+            request.user.person.friends.remove(person)
+            break
+    return HttpResponseRedirect(reverse("user", args=[username]))

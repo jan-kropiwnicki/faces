@@ -30,4 +30,5 @@ urlpatterns = [
     path('user/<slug:username>/send_request', facebook2_app.views.send_request, name="send_request"),
     path('user/<slug:username>/accept_request', facebook2_app.views.accept_request, name="accept_request"),
     path('user/<slug:username>/reject_request', facebook2_app.views.reject_request, name="reject_request"),
+    path('user/<slug:username>/end_friendship', facebook2_app.views.end_friendship, name="end_friendship"),
 ]

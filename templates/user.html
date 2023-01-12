@@ -10,7 +10,7 @@
     {% if viewed_user == user %}
         This is your profile.
     {% elif user.person in viewed_user.person.friends.all %}
-        You are friends with {{ viewed_user.first_name }}.
+        You are friends with {{ viewed_user.first_name }}. <a href="{% url 'end_friendship' viewed_user.username %}">End friendship</a>
     {% elif user.person in viewed_user.requestprofile.friend_requests.all %}
         You sent a friend request to {{ viewed_user.first_name }}.
     {% else %}
