@@ -8,7 +8,7 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        <h2>Welcome, {{ user.username }}!</h2>
+        <h2>Welcome, {{ user.first_name }}!</h2>
         {% if friend_requests_len > 3 %}
             <p>You have {{ friend_requests_len }} friend requests! <a href="#">See more</a></p>
         {% elif friend_requests_len > 0 %}
