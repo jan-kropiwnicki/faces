@@ -6,11 +6,24 @@
 </head>
 <body>
     {% if user.is_authenticated %}
-        <p>Welcome {{ user.username }}!
+        <p>Welcome, {{ user.first_name }}!
             <a href="{% url 'logout' %}">Log out</a>
             <a href="{% url 'create_post' %}">Create post</a>
             <a href="{% url 'search_users' %}">Search users</a>
         </p>
+        {% if friend_requests_len > 3 %}
+            <p>You have {{ friend_requests_len }} friend requests! <a href="#">See more</a></p>
+        {% elif friend_requests_len > 0 %}
+            {% for friend_request in friend_requests %}
+                <p>
+                    {{ friend_request.user.first_name }} {{ friend_request.user.last_name }}
+                    @{{ friend_request.user.username }} sent you a friend request!
+                    <a href="{% url 'accept_request' friend_request.user.username %}">Accept</a>
+                    <a href="{% url 'reject_request' friend_request.user.username %}">Decline</a>
+                </p>
+            {% endfor %}
+
+        {% endif %}
         {% if post_list %}
             <p>Your posts:</p>
         {% else %}
@@ -28,7 +41,9 @@
             <p>{{ post.0.likes }} likes</p>
         {% endfor %}
     {% else %}
-        <a href="{% url 'login' %}">Log in to Facebook 2</a>
+        <small>This website uses only necessary cookies in order to maintain the login session. If you do not log in, no
+        cookies will be used. By logging into the site, you agree on using these cookies.</small>
+        <p><a href="{% url 'login' %}">Log in to Facebook 2</a></p>
     {% endif %}
 </body>
 </html>

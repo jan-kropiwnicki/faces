@@ -26,5 +26,8 @@ urlpatterns = [
     path('create_post/', TemplateView.as_view(template_name="create-post.html"), name="create_post"),
     path('submit_post/', facebook2_app.views.submit_post, name="submit_post"),
     path('search_users/', facebook2_app.views.search_users, name="search_users"),
-    path('user/<slug:username>/', facebook2_app.views.user, name="user")
+    path('user/<slug:username>/', facebook2_app.views.user, name="user"),
+    path('user/<slug:username>/send_request', facebook2_app.views.send_request, name="send_request"),
+    path('user/<slug:username>/accept_request', facebook2_app.views.accept_request, name="accept_request"),
+    path('user/<slug:username>/reject_request', facebook2_app.views.reject_request, name="reject_request"),
 ]

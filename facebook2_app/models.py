@@ -9,10 +9,16 @@ class Person(models.Model):
     friends = models.ManyToManyField("self")
 
 
+class RequestProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    friend_requests = models.ManyToManyField(Person)
+
+
 @receiver(post_save, sender=User)
 def user_is_created(sender, instance, created, **kwargs):
     if created:
         Person.objects.create(user=instance)
+        RequestProfile.objects.create(user=instance)
     else:
         instance.person.save()
 

@@ -2,11 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ user.first_name }} {{ user.last_name }}'s profile on Facebook 2</title>
+    <title>{{ viewed_user.first_name }} {{ viewed_user.last_name }}'s profile on Facebook 2</title>
 </head>
 <body>
     <a href="{% url 'index' %}">Go home</a>
-    <h2>{{ user.first_name }} {{ user.last_name }} @{{ user.username }}</h2>
+    <h2>{{ viewed_user.first_name }} {{ viewed_user.last_name }} @{{ viewed_user.username }}</h2>
+    {% if viewed_user == user %}
+        This is your profile.
+    {% elif user.person in viewed_user.person.friends.all %}
+        You are friends with {{ viewed_user.first_name }}.
+    {% elif user.person in viewed_user.requestprofile.friend_requests.all %}
+        You sent a friend request to {{ viewed_user.first_name }}.
+    {% else %}
+        <a href="{% url 'send_request' viewed_user.username %}">Send friend request</a>
+    {% endif %}
     {% if post_list %}
         <p>Their posts:</p>
     {% else %}
@@ -14,8 +23,8 @@
     {% endif %}
     {% for post in post_list %}
         <hr>
-        <p>Published on {{ post.0.date.date }} by <a href="{% url 'user' post.0.author.user.username %}">
-            {{ post.0.author.user.first_name }} {{ post.0.author.user.last_name }}</a> @{{ post.0.author.user.username }}</p>
+        <p>Published on {{ post.0.date.date }} by <a href="{% url 'user' user.username %}">
+            {{ viewed_user.first_name }} {{ viewed_user.last_name }}</a> @{{ viewed_user.username }}</p>
         <p>
         {% for line in post.1 %}
             {{ line }}<br>

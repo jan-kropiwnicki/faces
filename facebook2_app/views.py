@@ -8,11 +8,15 @@ from django.urls import reverse
 
 def index(request):
     post_list = []
+    friend_requests = []
     if request.user.is_authenticated:
         post_list_plain = request.user.person.post_set.order_by("-date")
         for post in post_list_plain:
             post_list += [[post, post.content.split("\r\n")]]
-    return render(request, "index.html", {"post_list": post_list})
+        friend_requests = request.user.requestprofile.friend_requests.all()
+    return render(request, "index.html", {
+        "post_list": post_list, "friend_requests": friend_requests, "friend_requests_len": len(friend_requests)
+    })
 
 
 def submit_post(request):
@@ -36,4 +40,28 @@ def user(request, username):
     post_list_plain = viewed_user.person.post_set.order_by("-date")
     for post in post_list_plain:
         post_list += [[post, post.content.split("\r\n")]]
-    return render(request, "user.html", {"user": viewed_user, "post_list": post_list})
+    return render(request, "user.html", {"viewed_user": viewed_user, "post_list": post_list})
+
+
+def send_request(request, username):
+    get_object_or_404(User, username=username).requestprofile.friend_requests.add(request.user.person)
+    return HttpResponseRedirect(reverse("user", args=[username]))
+
+
+def accept_request(request, username):
+    accepted_user = get_object_or_404(User, username=username)
+    if accepted_user.person in request.user.requestprofile.friend_requests.all():
+        request.user.person.friends.add(accepted_user.person)
+    for person in request.user.requestprofile.friend_requests.all():
+        if person.user.username == username:
+            request.user.requestprofile.friend_requests.remove(person)
+            break
+    return HttpResponseRedirect(reverse("index"))
+
+
+def reject_request(request, username):
+    for person in request.user.requestprofile.friend_requests.all():
+        if person.user.username == username:
+            request.user.requestprofile.friend_requests.remove(person)
+            break
+    return HttpResponseRedirect(reverse("index"))
