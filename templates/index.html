@@ -8,6 +8,7 @@
 
 {% block content %}
     {% if user.is_authenticated %}
+        <h2>Welcome, {{ user.username }}!</h2>
         {% if friend_requests_len > 3 %}
             <p>You have {{ friend_requests_len }} friend requests! <a href="#">See more</a></p>
         {% elif friend_requests_len > 0 %}
@@ -19,7 +20,6 @@
                     <a href="{% url 'reject_request' friend_request.user.username %}">Decline</a>
                 </p>
             {% endfor %}
-
         {% endif %}
         {% for post in post_list %}
             <hr>

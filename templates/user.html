@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ viewed_user.first_name }} {{ viewed_user.last_name }}'s profile on Facebook 2</title>
-</head>
-<body>
-    <a href="{% url 'index' %}">Go home</a>
+{% extends 'base.html' %}
+
+{% block title %}{% if viewed_user == user %}My{% else %}{{ viewed_user.first_name }}'s{% endif %} profile &ndash; {% endblock %}
+
+{% block content %}
     <h2>{{ viewed_user.first_name }} {{ viewed_user.last_name }} @{{ viewed_user.username }}</h2>
     {% if viewed_user == user %}
         This is your profile.
@@ -17,7 +14,7 @@
         <a href="{% url 'send_request' viewed_user.username %}">Send friend request</a>
     {% endif %}
     {% if post_list %}
-        <p>Their posts:</p>
+        <p>{% if viewed_user == user %}Your{% else %}{{ viewed_user.first_name }}'s{% endif %} posts:</p>
     {% else %}
         <p>This user has no posts.</p>
     {% endif %}
@@ -32,6 +29,4 @@
         </p>
         <p>{{ post.0.likes }} likes</p>
     {% endfor %}
-
-</body>
-</html>
+{% endblock %}
