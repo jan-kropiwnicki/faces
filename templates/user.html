@@ -3,30 +3,33 @@
 {% block title %}{% if viewed_user == user %}My{% else %}{{ viewed_user.first_name }}'s{% endif %} profile &ndash; {% endblock %}
 
 {% block content %}
-    <h2>{{ viewed_user.first_name }} {{ viewed_user.last_name }} @{{ viewed_user.username }}</h2>
-    {% if viewed_user == user %}
-        This is your profile.
-    {% elif user.person in viewed_user.person.friends.all %}
-        You are friends with {{ viewed_user.first_name }}. <a href="{% url 'end_friendship' viewed_user.username %}">End friendship</a>
-    {% elif user.person in viewed_user.requestprofile.friend_requests.all %}
-        You sent a friend request to {{ viewed_user.first_name }}.
-    {% else %}
-        <a href="{% url 'send_request' viewed_user.username %}">Send friend request</a>
-    {% endif %}
-    {% if post_list %}
-        <p>{% if viewed_user == user %}Your{% else %}{{ viewed_user.first_name }}'s{% endif %} posts:</p>
-    {% else %}
-        <p>This user has no posts.</p>
-    {% endif %}
-    {% for post in post_list %}
-        <hr>
-        <p>Published on {{ post.0.date.date }} by <a href="{% url 'user' user.username %}">
-            {{ viewed_user.first_name }} {{ viewed_user.last_name }}</a> @{{ viewed_user.username }}</p>
-        <p>
-        {% for line in post.1 %}
-            {{ line }}<br>
+    {% if user.is_authenticated %}
+
+        <h2>{{ viewed_user.first_name }} {{ viewed_user.last_name }} @{{ viewed_user.username }}</h2>
+        {% if viewed_user == user %}
+            This is your profile.
+        {% elif user.person in viewed_user.person.friends.all %}
+            You are friends with {{ viewed_user.first_name }}. <a href="{% url 'end_friendship' viewed_user.username %}">End friendship</a>
+        {% elif user.person in viewed_user.requestprofile.friend_requests.all %}
+            You sent a friend request to {{ viewed_user.first_name }}.
+        {% else %}
+            <a href="{% url 'send_request' viewed_user.username %}">Send friend request</a>
+        {% endif %}
+        {% if post_list %}
+            <p>{% if viewed_user == user %}Your{% else %}{{ viewed_user.first_name }}'s{% endif %} posts:</p>
+        {% else %}
+            <p>This user has no posts.</p>
+        {% endif %}
+        {% for post in post_list %}
+            <hr>
+            <p>Published on {{ post.0.date.date }} by <a href="{% url 'user' user.username %}">
+                {{ viewed_user.first_name }} {{ viewed_user.last_name }}</a> @{{ viewed_user.username }}</p>
+            <p>
+            {% for line in post.1 %}
+                {{ line }}<br>
+            {% endfor %}
+            </p>
+            <p>{{ post.0.likes }} likes</p>
         {% endfor %}
-        </p>
-        <p>{{ post.0.likes }} likes</p>
-    {% endfor %}
+    {% endif %}
 {% endblock %}

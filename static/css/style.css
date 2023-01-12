@@ -7,11 +7,19 @@
 
 }
 
-
 @font-face {
     font-family: 'montserrat_alternates';
     src: url('../fonts/montserratalternates-semibold-webfont.woff2') format('woff2'),
          url('../fonts/montserratalternates-semibold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'fontello';
+    src: url('../fonts/fontello.woff2') format('woff2'),
+         url('../fonts/fontello.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 
@@ -40,7 +48,7 @@ header {
 .logo {
     height: 56px;
 }
-header ul {
+header ul, .mobile-menu ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -87,4 +95,52 @@ input {
     border-radius: 100px;
     font-size: 16px;
     font-family: 'montserrat', sans-serif;
+}
+.mobile-menu-icon {
+    display: none;
+}
+.mobile-menu-icon a {
+    font-family: 'fontello';
+    font-size: 36px;
+}
+#mobile-menu-box {
+    background-color: #0007;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.mobile-menu {
+    background-color: #0a6;
+}
+.mobile-menu ul li a {
+    display: block;
+    padding: 8px 16px;
+    font-family: 'montserrat_alternates', sans-serif;
+    font-size: 40px;
+    line-height: 56px;
+    color: white;
+    text-decoration: none;
+}
+.mobile-menu-close {
+    text-align: right;
+    font-size: 72px !important;
+    padding-bottom: 0 !important;
+}
+
+@media only screen and (max-width: 900px) {
+    header ul li {
+        display: none;
+    }
+    header ul li:first-child, .mobile-menu-icon, .login-link {
+        display: inline;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .container {
+        width: 100%;
+        background-color: #dfd;
+    }
 }

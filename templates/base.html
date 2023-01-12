@@ -13,15 +13,37 @@
         <ul>
             <li style="float: left"><a href="{% url 'index' %}"><img class="logo" src="{% static 'img/postit-w.png' %}" alt="Postit logo"></a></li>
             {% if user.is_authenticated %}
+                <li class="mobile-menu-icon"><a href="javascript:show_menu()">&#xf0c9;</a></li>
                 <li><a href="{% url 'logout' %}">Log out</a></li>
                 <li><a href="{% url 'create_post' %}">Create a post</a></li>
                 <li><a href="{% url 'search_users' %}">Search users</a></li>
                 <li><a href="{% url 'user' user.username %}">My profile</a></li>
             {% else %}
-                <li><a href="{% url 'login' %}">Log in</a></li>
+                <li class="login-link"><a href="{% url 'login' %}">Log in</a></li>
             {% endif %}
         </ul>
     </header>
+    <div id="mobile-menu-box">
+        <div class="mobile-menu">
+            <ul>
+                <li><a href="javascript:hide_menu()" class="mobile-menu-close">&times;</a></li>
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'user' user.username %}">My profile</a></li>
+                <li><a href="{% url 'search_users' %}">Search users</a></li>
+                <li><a href="{% url 'create_post' %}">Create a post</a></li>
+                <li><a href="{% url 'logout' %}">Log out</a></li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        function show_menu() {
+            document.getElementById("mobile-menu-box").style.display = "initial"
+        }
+        function hide_menu() {
+            document.getElementById("mobile-menu-box").style.display = "none"
+        }
+        hide_menu()
+    </script>
     <div class="container">
         <main>
             {% block content %}
