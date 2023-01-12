@@ -11,10 +11,10 @@
         <ul>
             <li style="float: left"><a href="{% url 'index' %}"><img class="logo" src="{% static 'img/postit-w.png' %}" alt="Postit logo"></a></li>
             {% if user.is_authenticated %}
+                <li><a href="{% url 'logout' %}">Log out</a></li>
                 <li><a href="{% url 'create_post' %}">Create a post</a></li>
                 <li><a href="{% url 'search_users' %}">Search users</a></li>
-                <li><a href="#">My porfile</a></li>
-                <li><a href="{% url 'logout' %}">Log out</a></li>
+                <li><a href="#">My profile</a></li>
             {% else %}
                 <li><a href="{% url 'login' %}">Log in</a></li>
             {% endif %}
