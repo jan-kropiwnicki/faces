@@ -24,11 +24,6 @@
             {% endfor %}
 
         {% endif %}
-        {% if post_list %}
-            <p>Your posts:</p>
-        {% else %}
-            <p>You have no posts.</p>
-        {% endif %}
         {% for post in post_list %}
             <hr>
             <p>Published on {{ post.0.date.date }} by <a href="#">{{ post.0.author.user.first_name }} {{ post.0.author.user.last_name }}</a>

@@ -10,7 +10,10 @@ def index(request):
     post_list = []
     friend_requests = []
     if request.user.is_authenticated:
-        post_list_plain = request.user.person.post_set.order_by("-date")
+        post_list_plain = []
+        for friend in request.user.person.friends.all():
+            post_list_plain += list(friend.post_set.all())
+        post_list_plain.sort(key=lambda x: x.date, reverse=True)
         for post in post_list_plain:
             post_list += [[post, post.content.split("\r\n")]]
         friend_requests = request.user.requestprofile.friend_requests.all()
