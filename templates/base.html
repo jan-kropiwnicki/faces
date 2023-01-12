@@ -23,27 +23,29 @@
             {% endif %}
         </ul>
     </header>
-    <div id="mobile-menu-box">
-        <div class="mobile-menu">
-            <ul>
-                <li><a href="javascript:hide_menu()" class="mobile-menu-close">&times;</a></li>
-                <li><a href="{% url 'index' %}">Home</a></li>
-                <li><a href="{% url 'user' user.username %}">My profile</a></li>
-                <li><a href="{% url 'search_users' %}">Search users</a></li>
-                <li><a href="{% url 'create_post' %}">Create a post</a></li>
-                <li><a href="{% url 'logout' %}">Log out</a></li>
-            </ul>
+    {% if user.is_authenticated %}
+        <div id="mobile-menu-box">
+            <div class="mobile-menu">
+                <ul>
+                    <li><a href="javascript:hide_menu()" class="mobile-menu-close">&times;</a></li>
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'user' user.username %}">My profile</a></li>
+                    <li><a href="{% url 'search_users' %}">Search users</a></li>
+                    <li><a href="{% url 'create_post' %}">Create a post</a></li>
+                    <li><a href="{% url 'logout' %}">Log out</a></li>
+                </ul>
+            </div>
         </div>
-    </div>
-    <script>
-        function show_menu() {
-            document.getElementById("mobile-menu-box").style.display = "initial"
-        }
-        function hide_menu() {
-            document.getElementById("mobile-menu-box").style.display = "none"
-        }
-        hide_menu()
-    </script>
+        <script>
+            function show_menu() {
+                document.getElementById("mobile-menu-box").style.display = "initial"
+            }
+            function hide_menu() {
+                document.getElementById("mobile-menu-box").style.display = "none"
+            }
+            hide_menu()
+        </script>
+    {% endif %}
     <div class="container">
         <main>
             {% block content %}

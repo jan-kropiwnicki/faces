@@ -1,16 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create a post</title>
-</head>
-<body>
-    <form method="post" action="{% url 'submit_post' %}">
+{% extends 'base.html' %}
+
+{% block title %}Create a post &ndash; {% endblock %}
+
+{% block content %}
+    <form method="post" action="{% url 'submit_post' %}" class="post-form">
         {% csrf_token %}
-        <label for="id_content">Write your post below:</label><br>
-        <textarea name="content" id="id_content" rows="20" cols="100"></textarea><br>
+        <label for="id_content"><h2>Write your post below:</h2></label><br>
+        <textarea name="content" id="id_content" rows="20" cols="100" placeholder="What's happening?" autofocus required></textarea><br>
         <button type="submit">Submit post</button>
     </form>
-    <a href="{% url 'index' %}">Go back</a>
-</body>
-</html>
+{% endblock %}
