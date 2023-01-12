@@ -26,7 +26,8 @@
         {% endif %}
         {% for post in post_list %}
             <hr>
-            <p>Published on {{ post.0.date.date }} by <a href="#">{{ post.0.author.user.first_name }} {{ post.0.author.user.last_name }}</a>
+            <p>Published on {{ post.0.date.date }} by <a href="{% url 'user' post.0.author.user.username%}">
+                {{ post.0.author.user.first_name }} {{ post.0.author.user.last_name }}</a>
                 @{{ post.0.author.user.username }}</p>
             <p>
             {% for line in post.1 %}
