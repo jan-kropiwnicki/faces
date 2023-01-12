@@ -142,6 +142,13 @@ textarea {
 .post-form {
     text-align: center;
 }
+.post-icon {
+    font-family: 'fontello';
+    font-size: 20px;
+    line-height: 16px;
+    text-decoration: none;
+    color: #666;
+}
 
 @media only screen and (max-width: 900px) {
     header ul li {
