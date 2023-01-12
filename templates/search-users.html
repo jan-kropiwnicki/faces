@@ -9,7 +9,8 @@
     <p>All users on Facebook 2:</p>
     <ul>
     {% for person in users %}
-        <li><a href="{% url 'user' person.user.username %}">{{ person.user.first_name }} {{ person.user.last_name }}</a> @{{ person.user.username }}</li>
+        <li><a href="{% url 'user' person.user.username %}">{{ person.user.first_name }} {{ person.user.last_name }}</a>
+            @{{ person.user.username }}{% if person.user == user %} (you){% endif %}</li>
     {% endfor %}
     </ul>
 </body>
