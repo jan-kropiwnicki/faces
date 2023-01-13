@@ -6,7 +6,7 @@
     <form method="post" action="{% url 'submit_post' %}" class="post-form">
         {% csrf_token %}
         <label for="id_content"><h2>Write your post below:</h2></label><br>
-        <textarea name="content" id="id_content" rows="20" cols="100" placeholder="What's happening?" autofocus required></textarea><br>
+        <textarea name="content" id="id_content" rows="20" placeholder="What's happening?" autofocus required></textarea><br>
         <button type="submit">Submit post</button>
     </form>
 {% endblock %}
