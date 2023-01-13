@@ -7,13 +7,13 @@
 
         <h2>{{ viewed_user.first_name }} {{ viewed_user.last_name }} @{{ viewed_user.username }}</h2>
         {% if viewed_user == user %}
-            This is your profile.
+            <a class="friend-button friend-button-active">You</a>
         {% elif user.person in viewed_user.person.friends.all %}
-            You are friends with {{ viewed_user.first_name }}. <a href="{% url 'end_friendship' viewed_user.username %}">End friendship</a>
+            <a class="friend-button friend-button-active" href="{% url 'end_friendship' viewed_user.username %}">End friendship</a>
         {% elif user.person in viewed_user.requestprofile.friend_requests.all %}
-            You sent a friend request to {{ viewed_user.first_name }}.
+            <a class="friend-button friend-button-active">Pending friend request</a>
         {% else %}
-            <a href="{% url 'send_request' viewed_user.username %}">Send friend request</a>
+            <a class="friend-button" href="{% url 'send_request' viewed_user.username %}">Send friend request</a>
         {% endif %}
         {% if post_list %}
             <p>{% if viewed_user == user %}Your{% else %}{{ viewed_user.first_name }}'s{% endif %} posts:</p>

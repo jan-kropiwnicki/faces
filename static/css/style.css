@@ -80,15 +80,16 @@ header ul li a:hover {
 main {
     padding: 86px 20px 20px;
 }
-button {
+button, .friend-button {
     background-color: #0a6;
     border: none;
     padding: 10px;
     font-size: 16px;
-    font-family: 'montserrat', sans-serif;
+    font-family: 'montserrat_alternates', sans-serif;
     color: white;
     border-radius: 100px;
     cursor: pointer;
+    text-decoration: none;
 }
 input {
     padding: 10px 15px;
@@ -150,6 +151,12 @@ textarea {
     line-height: 16px;
     text-decoration: none;
     color: #666;
+}
+.friend-button-active {
+    color: #0a6;
+    background-color: white;
+    outline: 3px solid #0a6;
+    padding: 7px;
 }
 
 @media only screen and (max-width: 900px) {
