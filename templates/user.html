@@ -26,7 +26,7 @@
                 Published on {{ post.0.date.date }} by <a href="{% url 'user' user.username %}">
                 {{ viewed_user.first_name }} {{ viewed_user.last_name }}</a> @{{ viewed_user.username }}
                 {% if viewed_user == user %}&nbsp;<a href="{% url 'edit_post' post.0.id %}" class="post-icon">&#xe800;</a>&nbsp;
-                    <a href="#" class="post-icon">&#xe801;</a>{% endif %}
+                    <a href="{% url 'delete_post' post.0.id %}" class="post-icon">&#xe801;</a>{% endif %}
             </p>
             <p>
             {% for line in post.1 %}

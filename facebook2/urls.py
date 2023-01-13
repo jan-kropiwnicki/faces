@@ -32,5 +32,6 @@ urlpatterns = [
     path('@<slug:username>/reject_request', facebook2_app.views.reject_request, name="reject_request"),
     path('@<slug:username>/end_friendship', facebook2_app.views.end_friendship, name="end_friendship"),
     path('<int:post_id>/edit', facebook2_app.views.edit_post, name="edit_post"),
-    path('<int:post_id>/edit/submit', facebook2_app.views.submit_edited_post, name="submit_edited_post")
+    path('<int:post_id>/edit/submit', facebook2_app.views.submit_edited_post, name="submit_edited_post"),
+    path('<int:post_id>/delete', facebook2_app.views.delete_post, name="delete_post"),
 ]

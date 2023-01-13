@@ -80,12 +80,22 @@ def end_friendship(request, username):
 
 def edit_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    return render(request, "edit-post.html", {"post": post})
+    if post.author.user == request.user:
+        return render(request, "edit-post.html", {"post": post})
+    return HttpResponseRedirect(reverse("user", args=[request.user.username]))
 
 
 def submit_edited_post(request, post_id):
     content = request.POST["content"]
     post = get_object_or_404(Post, id=post_id)
-    post.content = content
-    post.save()
+    if post.author.user == request.user:
+        post.content = content
+        post.save()
+    return HttpResponseRedirect(reverse("user", args=[request.user.username]))
+
+
+def delete_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if post.author.user == request.user:
+        post.delete()
     return HttpResponseRedirect(reverse("user", args=[request.user.username]))
