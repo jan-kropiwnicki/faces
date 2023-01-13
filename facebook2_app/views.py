@@ -76,3 +76,16 @@ def end_friendship(request, username):
             request.user.person.friends.remove(person)
             break
     return HttpResponseRedirect(reverse("user", args=[username]))
+
+
+def edit_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    return render(request, "edit-post.html", {"post": post})
+
+
+def submit_edited_post(request, post_id):
+    content = request.POST["content"]
+    post = get_object_or_404(Post, id=post_id)
+    post.content = content
+    post.save()
+    return HttpResponseRedirect(reverse("user", args=[request.user.username]))

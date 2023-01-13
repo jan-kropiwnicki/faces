@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit post &ndash; {% endblock %}
+
+{% block content %}
+    <form method="post" action="{% url 'submit_edited_post' post.id %}" class="post-form">
+        {% csrf_token %}
+        <label for="id_content"><h2>Write your post below:</h2></label><br>
+        <textarea name="content" id="id_content" rows="20" placeholder="What's happening?" autofocus required>{{ post.content }}</textarea><br>
+        <button type="submit">Submit new post</button>
+    </form>
+{% endblock %}
