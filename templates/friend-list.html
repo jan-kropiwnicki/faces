@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Friend list &ndash; {% endblock %}
+
+{% block content %}
+    <h2>You have {% if friend_count == 0 %}no{% else %}{{ friend_count }}{% endif %} friend{% if friend_count != 1 %}s{% endif %}!</h2>
+    {% for friend in user.person.friends.all %}
+        <a href="{% url 'user' friend.user.username %}">{{ friend.user.first_name }} {{ friend.user.last_name }} @{{ friend.user.username }}</a><br>
+    {% endfor %}
+
+{% endblock %}

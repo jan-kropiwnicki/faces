@@ -99,3 +99,7 @@ def delete_post(request, post_id):
     if post.author.user == request.user:
         post.delete()
     return HttpResponseRedirect(reverse("user", args=[request.user.username]))
+
+
+def friend_list(request):
+    return render(request, "friend-list.html", {"friend_count": len(request.user.person.friends.all())})
