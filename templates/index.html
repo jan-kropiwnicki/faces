@@ -22,16 +22,18 @@
             {% endfor %}
         {% endif %}
         {% for post in post_list %}
-            <hr>
-            <p>Published on {{ post.0.date.date }} by <a href="{% url 'user' post.0.author.user.username%}">
-                {{ post.0.author.user.first_name }} {{ post.0.author.user.last_name }}</a>
-                @{{ post.0.author.user.username }}</p>
-            <p>
-            {% for line in post.1 %}
-                {{ line }}<br>
-            {% endfor %}
-            </p>
-            <p>{{ post.0.likes }} likes</p>
+            <div id="{{ post.0.id }}">
+                <hr>
+                <p>Published on {{ post.0.date.date }} by <a href="{% url 'user' post.0.author.user.username %}">
+                    {{ post.0.author.user.first_name }} {{ post.0.author.user.last_name }}</a>
+                    @{{ post.0.author.user.username }}</p>
+                <p>
+                {% for line in post.1 %}
+                    {{ line }}<br>
+                {% endfor %}
+                </p>
+                <p>{{ post.0.likes }} likes</p>
+            </div>
         {% endfor %}
     {% else %}
         <h1>Welcome to Postit.</h1>

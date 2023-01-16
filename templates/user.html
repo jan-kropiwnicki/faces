@@ -21,19 +21,21 @@
             <p>This user has no posts.</p>
         {% endif %}
         {% for post in post_list %}
-            <hr>
-            <p>
-                Published on {{ post.0.date.date }} by <a href="{% url 'user' user.username %}">
-                {{ viewed_user.first_name }} {{ viewed_user.last_name }}</a> @{{ viewed_user.username }}
-                {% if viewed_user == user %}&nbsp;<a href="{% url 'edit_post' post.0.id %}" class="post-icon">&#xe800;</a>&nbsp;
-                    <a href="{% url 'delete_post' post.0.id %}" class="post-icon">&#xe801;</a>{% endif %}
-            </p>
-            <p>
-            {% for line in post.1 %}
-                {{ line }}<br>
-            {% endfor %}
-            </p>
-            <p>{{ post.0.likes }} likes</p>
+            <div id="{{ post.0.id }}">
+                <hr>
+                <p>
+                    Published on {{ post.0.date.date }} by <a href="{% url 'user' user.username %}">
+                    {{ viewed_user.first_name }} {{ viewed_user.last_name }}</a> @{{ viewed_user.username }}
+                    {% if viewed_user == user %}&nbsp;<a href="{% url 'edit_post' post.0.id %}" class="post-icon">&#xe800;</a>&nbsp;
+                        <a href="{% url 'delete_post' post.0.id %}" class="post-icon">&#xe801;</a>{% endif %}
+                </p>
+                <p>
+                {% for line in post.1 %}
+                    {{ line }}<br>
+                {% endfor %}
+                </p>
+                <p>{{ post.0.likes }} likes</p>
+            </div>
         {% endfor %}
     {% endif %}
 {% endblock %}
