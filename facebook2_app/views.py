@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Post, Person
 from django.contrib.auth.models import User
 from datetime import datetime
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 
 
@@ -15,7 +15,7 @@ def index(request):
             post_list_plain += list(friend.post_set.all())
         post_list_plain.sort(key=lambda x: x.date, reverse=True)
         for post in post_list_plain:
-            post_list += [[post, post.content.split("\r\n")]]
+            post_list += [[post, post.content.split("\r\n"), len(post.likeprofile_set.all())]]
         friend_requests = request.user.requestprofile.friend_requests.all()
     return render(request, "index.html", {
         "post_list": post_list, "friend_requests": friend_requests, "friend_requests_len": len(friend_requests)
@@ -26,8 +26,9 @@ def submit_post(request):
     content = request.POST["content"]
     author = request.user.person
     date = datetime.now()
-    likes = 0
-    post = Post(content=content, author=author, date=date, likes=likes)
+    post = Post(content=content, author=author, date=date)
+    post.save()
+    post.likeprofile_set.add(request.user.likeprofile)
     post.save()
     return HttpResponseRedirect(reverse("index"))
 
@@ -42,7 +43,7 @@ def user(request, username):
     post_list = []
     post_list_plain = viewed_user.person.post_set.order_by("-date")
     for post in post_list_plain:
-        post_list += [[post, post.content.split("\r\n")]]
+        post_list += [[post, post.content.split("\r\n"), len(post.likeprofile_set.all())]]
     return render(request, "user.html", {"viewed_user": viewed_user, "post_list": post_list})
 
 
@@ -103,3 +104,19 @@ def delete_post(request, post_id):
 
 def friend_list(request):
     return render(request, "friend-list.html", {"friend_count": len(request.user.person.friends.all())})
+
+
+def like(request):
+    post_id = request.GET.get("id")
+    post = get_object_or_404(Post, id=post_id)
+    if request.user.likeprofile not in post.likeprofile_set.all():
+        post.likeprofile_set.add(request.user.likeprofile)
+    return JsonResponse({})
+
+
+def dislike(request):
+    post_id = request.GET.get("id")
+    post = get_object_or_404(Post, id=post_id)
+    if request.user.likeprofile in post.likeprofile_set.all():
+        post.likeprofile_set.remove(request.user.likeprofile)
+    return JsonResponse({})

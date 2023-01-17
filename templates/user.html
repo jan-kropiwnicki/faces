@@ -34,7 +34,40 @@
                     {{ line }}<br>
                 {% endfor %}
                 </p>
-                <p>{{ post.0.likes }} likes</p>
+                <p>
+                    {% if user.likeprofile in post.0.likeprofile_set.all %}
+                        <a class="like-icon" id="like-{{ post.0.id }}" onclick="dislike({{ post.0.id }})">&#xf164;</a>
+                    {% else %}
+                        <a class="like-icon" id="like-{{ post.0.id }}" onclick="like({{ post.0.id }})">&#xe802;</a>
+                    {% endif %}
+                    <span id="like-count-{{ post.0.id }}">{{ post.2 }}</span>
+                </p>
+                <script>
+                    function like(id) {
+                        $.ajax({
+                            data: `id=${id}`,
+                            url: "{% url 'like' %}",
+                            success: function (response) {
+                                $("#like-" + id).html("&#xf164;");
+                            },
+                            error: function (response) {
+                                console.log(response.responseJSON.errors)
+                            }
+                        });
+                    }
+                    function dislike(id) {
+                        $.ajax({
+                            data: `id=${id}`,
+                            url: "{% url 'dislike' %}",
+                            success: function (response) {
+                                $("#like-" + id).html("&#xe802;");
+                            },
+                            error: function (response) {
+                                console.log(response.responseJSON.errors)
+                            }
+                        });
+                    }
+                </script>
             </div>
         {% endfor %}
     {% endif %}
