@@ -33,9 +33,39 @@ def submit_post(request):
     return HttpResponseRedirect(reverse("index"))
 
 
-def search_users(request):
-    users = Person.objects.all()
-    return render(request, "search-users.html", {"users": users})
+def search(request):
+    original_query = request.POST["query"]
+    query = original_query.lower()
+    users = User.objects.all()
+    direct_username_matches = []
+    direct_full_name_matches = []
+    direct_last_name_matches = []
+    direct_first_name_matches = []
+    first_name_matches = []
+    last_name_matches = []
+    full_name_matches = []
+    username_matches = []
+    for user in users:
+        if query == user.username.lower():
+            direct_username_matches += [user]
+        elif query == (user.first_name + ' ' + user.last_name).lower():
+            direct_full_name_matches += [user]
+        elif query == user.last_name.lower():
+            direct_last_name_matches += [user]
+        elif query == user.first_name.lower():
+            direct_first_name_matches += [user]
+        elif query in user.first_name.lower():
+            first_name_matches += [user]
+        elif query in user.last_name.lower():
+            last_name_matches += [user]
+        elif query in (user.first_name + ' ' + user.last_name).lower():
+            full_name_matches += [user]
+        elif query in user.username.lower():
+            username_matches += [user]
+    result = direct_username_matches + direct_full_name_matches + direct_last_name_matches + \
+             direct_first_name_matches + first_name_matches + last_name_matches + full_name_matches + \
+             username_matches
+    return render(request, "search-results.html", {"result": result, "query": original_query})
 
 
 def user(request, username):

@@ -142,7 +142,7 @@ textarea {
     margin-bottom: 15px;
     width: 90%;
 }
-.post-form {
+.post-form, .search-form {
     text-align: center;
 }
 .post-icon {
@@ -165,8 +165,18 @@ textarea {
     text-decoration: none;
     color: #0a6;
 }
+.search-icon {
+    font-family: 'fontello';
+    width: 45px;
+    height: 45px;
+    font-size: 24px;
+    line-height: 24px;
+}
+.search-form input {
+    width: 50%;
+}
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1065px) {
     header ul li {
         display: none;
     }

@@ -1,19 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Search users</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Search users &ndash; {% endblock %}
+
+{% block content %}
     {% if user.is_authenticated %}
-        <a href="{% url 'index' %}">Go back</a>
-        <p>All users on Facebook 2:</p>
-        <ul>
-        {% for person in users %}
-            <li><a href="{% url 'user' person.user.username %}">{{ person.user.first_name }} {{ person.user.last_name }}</a>
-                @{{ person.user.username }}{% if person.user == user %} (you){% endif %}</li>
-        {% endfor %}
-        </ul>
+        <form method="post" action="{% url 'search_results' %}" class="search-form">
+            {% csrf_token %}
+            <h2>Search users on Faces:</h2>
+            <input type="text" name="query" placeholder="Search..." autofocus required>
+            <button type="submit" class="search-icon">&#xe800;</button>
+        </form>
     {% endif %}
-</body>
-</html>
+{% endblock %}
