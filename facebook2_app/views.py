@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Post, Person
+from .models import Post
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
+from .forms import RegisterForm
 
 
 def index(request):
@@ -150,3 +151,18 @@ def dislike(request):
     if request.user.likeprofile in post.likeprofile_set.all():
         post.likeprofile_set.remove(request.user.likeprofile)
     return JsonResponse({})
+
+
+def register(request):
+    if request.method == 'GET':
+        form = RegisterForm()
+        return render(request, "registration/register.html", {"form": form})
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            return render(request, 'registration/register.html', {'form': form})

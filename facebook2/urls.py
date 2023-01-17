@@ -22,6 +22,7 @@ import facebook2_app.views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include("django.contrib.auth.urls")),
+    path('accounts/register/', facebook2_app.views.register, name="register"),
     path('', facebook2_app.views.index, name="index"),
     path('create_post/', TemplateView.as_view(template_name="create-post.html"), name="create_post"),
     path('submit_post/', facebook2_app.views.submit_post, name="submit_post"),
@@ -37,5 +38,5 @@ urlpatterns = [
     path('<int:post_id>/delete', facebook2_app.views.delete_post, name="delete_post"),
     path('like', facebook2_app.views.like, name="like"),
     path('dislike', facebook2_app.views.dislike, name="dislike"),
-    path('sr/', facebook2_app.views.search, name="search_results")
+    path('sr/', facebook2_app.views.search, name="search_results"),
 ]
