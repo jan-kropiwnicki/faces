@@ -49,6 +49,7 @@
                     url: "{% url 'like' %}",
                     success: function (response) {
                         $("#like-" + id).html("&#xf164;");
+                        $("#like-" + id).attr("onclick", `dislike(${id})`);
                     },
                     error: function (response) {
                         console.log(response.responseJSON.errors)
@@ -61,6 +62,7 @@
                     url: "{% url 'dislike' %}",
                     success: function (response) {
                         $("#like-" + id).html("&#xe802;");
+                        $("#like-" + id).attr("onclick", `like(${id})`);
                     },
                     error: function (response) {
                         console.log(response.responseJSON.errors)
@@ -69,7 +71,7 @@
             }
         </script>
     {% else %}
-        <h1>Welcome to Postit.</h1>
+        <h1>Welcome to Faces.</h1>
         <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
