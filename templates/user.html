@@ -5,16 +5,17 @@
 {% block content %}
     {% if user.is_authenticated %}
 
-        <h2>{{ viewed_user.first_name }} {{ viewed_user.last_name }} @{{ viewed_user.username }}</h2>
+        <h2>{{ viewed_user.first_name }} {{ viewed_user.last_name }} @{{ viewed_user.username }}
         {% if viewed_user == user %}
-            <a class="friend-button friend-button-active">You</a>
+            <button class="btn btn-outline-primary" disabled>You</button>
         {% elif user.person in viewed_user.person.friends.all %}
-            <a class="friend-button friend-button-active" href="{% url 'end_friendship' viewed_user.username %}">End friendship</a>
+            <a class="btn btn-outline-primary" href="{% url 'end_friendship' viewed_user.username %}">End friendship</a>
         {% elif user.person in viewed_user.requestprofile.friend_requests.all %}
-            <a class="friend-button friend-button-active">Pending friend request</a>
+            <button class="btn btn-outline-primary" disabled>Pending friend request</button>
         {% else %}
-            <a class="friend-button" href="{% url 'send_request' viewed_user.username %}">Send friend request</a>
+            <a class="btn btn-primary" href="{% url 'send_request' viewed_user.username %}"><strong>Send friend request</strong></a>
         {% endif %}
+        </h2>
         {% if post_list %}
             <p>{% if viewed_user == user %}Your{% else %}{{ viewed_user.first_name }}'s{% endif %} posts:</p>
         {% else %}
