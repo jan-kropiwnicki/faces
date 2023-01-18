@@ -39,11 +39,12 @@
                             <li class="nav-item"><a href="{% url 'friends' %}" class="nav-link link-dark px-2">Friends</a></li>
                             <li class="nav-item"><a href="{% url 'create_post' %}" class="nav-link link-dark px-2">Create post</a></li>
                         </ul>
-                        <div class="dropdown text-end">
+                        <div class="dropstart text-end">
                             <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="https://github.com/mdo.png" alt="{{ user.username }}" class="rounded-circle" width="32" height="32">
                             </a>
                             <ul class="dropdown-menu text-small">
+                                <li><h6 class="dropdown-header">Welcome, {{ user.first_name }}</h6></li>
                                 <li><a class="dropdown-item" href="#">Preferences</a></li>
                                 <li><a class="dropdown-item" href="{% url 'user' user.username %}">My profile</a></li>
                                 <li><hr class="dropdown-divider"></li>
@@ -59,10 +60,13 @@
                 <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
                     <img class="bi me-1" height="38" src="{% static 'img/postit.png' %}" alt="Faces logo">
                 </a>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                {% if user.is_authenticated %}
+                    <form method="get" class="d-flex" role="search" action="{% url 'search_results' %}">
+                        <input class="form-control me-2" name="q" type="search" placeholder="Search..." aria-label="Search"
+                               value="{% block query %}{% endblock %}">
+                        <button class="btn btn-outline-danger" type="submit">Search</button>
+                    </form>
+                {% endif %}
             </div>
         </header>
     </div>
@@ -74,7 +78,7 @@
         <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
             <p class="col-md-4 mb-0 text-muted">Made with ❤️ by Jan Kropiwnicki</p>
             <a href="{% url 'index' %}" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-                <img src="{% static 'img/logo-g.png' %}" class="bi me-2" height="38">
+                <img src="{% static 'img/logo-g.png' %}" class="bi me-2" height="38" alt="Faces logo">
             </a>
             <ul class="nav col-md-4 justify-content-end">
                 <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>

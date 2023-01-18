@@ -2,14 +2,10 @@
 
 {% block title %}Search results for {{ query }} &ndash; {% endblock %}
 
+{% block query %}{{ query }}{% endblock %}
+
 {% block content %}
     {% if user.is_authenticated %}
-        <form method="post" action="{% url 'search_results' %}" class="search-form">
-            {% csrf_token %}
-            <h2>Search users on Faces:</h2>
-            <input type="text" name="query" placeholder="Search..." value="{{ query }}" autofocus required>
-            <button type="submit" class="search-icon">&#xe800;</button>
-        </form>
         {% if result %}
             <h3>Search results for <i>{{ query }}</i></h3>
         {% else %}

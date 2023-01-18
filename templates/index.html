@@ -34,42 +34,44 @@
                 </p>
                 <p>
                     {% if user.likeprofile in post.0.likeprofile_set.all %}
-                        <a class="like-icon" id="like-{{ post.0.id }}" onclick="dislike({{ post.0.id }})">&#xf164;</a>
+                        <a class="like-icon" id="like-{{ post.0.id }}" onclick="dislike_{{ post.0.id }}()"><i class="bi bi-star-fill lead text-danger"></i></a>
                     {% else %}
-                        <a class="like-icon" id="like-{{ post.0.id }}" onclick="like({{ post.0.id }})">&#xe803;</a>
+                        <a class="like-icon" id="like-{{ post.0.id }}" onclick="like_{{ post.0.id }}()"><i class="bi bi-star lead text-danger"></i></a>
                     {% endif %}
                     <span id="like-count-{{ post.0.id }}">{{ post.2 }}</span>
                 </p>
             </div>
+            <script>
+                function like_{{ post.0.id }}() {
+                    $.ajax({
+                        data: "id=" + {{ post.0.id }},
+                        url: "{% url 'like' %}",
+                        success: function (response) {
+                            $("#like-" + {{ post.0.id }}).html('<i class="bi bi-star-fill lead text-danger"></i>');
+                            $("#like-" + {{ post.0.id }}).attr("onclick", "dislike_{{ post.0.id }}()");
+                            $("#like-count-" + {{ post.0.id }}).html(response.new_likes)
+                        },
+                        error: function (response) {
+                            console.log(response.responseJSON.errors)
+                        }
+                    });
+                }
+                function dislike_{{ post.0.id }}() {
+                    $.ajax({
+                        data: "id=" + {{ post.0.id }},
+                        url: "{% url 'dislike' %}",
+                        success: function (response) {
+                            $("#like-" + {{ post.0.id }}).html('<i class="bi bi-star lead text-danger"></i>');
+                            $("#like-" + {{ post.0.id }}).attr("onclick", "like_{{ post.0.id }}()");
+                            $("#like-count-" + {{ post.0.id }}).html(response.new_likes)
+                        },
+                        error: function (response) {
+                            console.log(response.responseJSON.errors)
+                        }
+                    });
+                }
+            </script>
         {% endfor %}
-        <script>
-            function like(id) {
-                $.ajax({
-                    data: `id=${id}`,
-                    url: "{% url 'like' %}",
-                    success: function (response) {
-                        $("#like-" + id).html("&#xf164;");
-                        $("#like-" + id).attr("onclick", `dislike(${id})`);
-                    },
-                    error: function (response) {
-                        console.log(response.responseJSON.errors)
-                    }
-                });
-            }
-            function dislike(id) {
-                $.ajax({
-                    data: `id=${id}`,
-                    url: "{% url 'dislike' %}",
-                    success: function (response) {
-                        $("#like-" + id).html("&#xe803;");
-                        $("#like-" + id).attr("onclick", `like(${id})`);
-                    },
-                    error: function (response) {
-                        console.log(response.responseJSON.errors)
-                    }
-                });
-            }
-        </script>
     {% else %}
         <h1>Welcome to Faces.</h1>
         <p>

@@ -35,7 +35,7 @@ def submit_post(request):
 
 
 def search(request):
-    original_query = request.POST["query"]
+    original_query = request.GET.get("q")
     query = original_query.lower()
     users = User.objects.all()
     direct_username_matches = []
@@ -142,7 +142,7 @@ def like(request):
     post = get_object_or_404(Post, id=post_id)
     if request.user.likeprofile not in post.likeprofile_set.all():
         post.likeprofile_set.add(request.user.likeprofile)
-    return JsonResponse({})
+    return JsonResponse({"new_likes": len(post.likeprofile_set.all())})
 
 
 def dislike(request):
@@ -150,7 +150,7 @@ def dislike(request):
     post = get_object_or_404(Post, id=post_id)
     if request.user.likeprofile in post.likeprofile_set.all():
         post.likeprofile_set.remove(request.user.likeprofile)
-    return JsonResponse({})
+    return JsonResponse({"new_likes": len(post.likeprofile_set.all())})
 
 
 def register(request):

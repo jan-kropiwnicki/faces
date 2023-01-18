@@ -26,7 +26,6 @@ urlpatterns = [
     path('', facebook2_app.views.index, name="index"),
     path('create_post/', TemplateView.as_view(template_name="create-post.html"), name="create_post"),
     path('submit_post/', facebook2_app.views.submit_post, name="submit_post"),
-    path('s/', TemplateView.as_view(template_name="search-users.html"), name="search_users"),
     path('friends/', facebook2_app.views.friend_list, name="friends"),
     path('@<slug:username>/', facebook2_app.views.user, name="user"),
     path('@<slug:username>/send_request', facebook2_app.views.send_request, name="send_request"),
@@ -38,5 +37,5 @@ urlpatterns = [
     path('<int:post_id>/delete', facebook2_app.views.delete_post, name="delete_post"),
     path('like', facebook2_app.views.like, name="like"),
     path('dislike', facebook2_app.views.dislike, name="dislike"),
-    path('sr/', facebook2_app.views.search, name="search_results"),
+    path('s/', facebook2_app.views.search, name="search_results"),
 ]
