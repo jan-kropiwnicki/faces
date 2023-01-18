@@ -3,10 +3,13 @@
 {% block title %}Edit post &ndash; {% endblock %}
 
 {% block content %}
-    <form method="post" action="{% url 'submit_edited_post' post.id %}" class="post-form">
+    <form method="post" action="{% url 'submit_edited_post' post.id %}" class="post-form text-center">
         {% csrf_token %}
-        <label for="id_content"><h2>Write your post below:</h2></label><br>
-        <textarea name="content" id="id_content" rows="20" placeholder="What's happening?" autofocus required>{{ post.content }}</textarea><br>
-        <button type="submit">Submit new post</button>
+        <h2>Write your post below:</h2>
+        <div class="container-sm form-group mx-5-sm my-3">
+            <textarea name="content" id="id_content" class="form-control" rows="15" placeholder="What's happening?"
+                      autofocus required style="resize: none">{{ post.content }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-outline-primary align-center">Submit post</button>
     </form>
 {% endblock %}
