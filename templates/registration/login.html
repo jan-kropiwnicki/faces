@@ -1,24 +1,37 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height: 100%">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
     <title>Log in &ndash; Faces</title>
 </head>
-<body>
-    <a href="{% url 'index' %}" class="login-logo"><img src="{% static 'img/postit.png' %}" alt="Postit logo"></a>
-    <div class="form-div">
-        <h2>Log in to Faces</h2>
+<body class="text-center bg-light" style="display: flex; height: 100%">
+    <main class="w-100 m-auto" style="max-width: 330px; padding: 15px">
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Log in</button>
+            <a href="{% url 'index' %}">
+                <img class="mb-4" src="{% static 'img/postit.png' %}" alt="Faces logo" height="38">
+            </a>
+            <h1 class="h3 mb-3 fw-normal">Log in to Faces</h1>
+            <div class="form-floating">
+                <input type="text" name="username" class="form-control" id="floatingInput" placeholder="username" style="margin-bottom: -1px; border-bottom-left-radius: 0; border-bottom-right-radius: 0" required>
+                <label for="floatingInput">Username</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="password" style="border-top-left-radius: 0; border-top-right-radius: 0" required>
+                <label for="floatingPassword">Password</label>
+            </div>
+            <button class="w-100 btn btn-lg btn-primary mt-4" type="submit">Sign in</button>
+            <p class="mt-5 mb-3 text-muted">Not a user? <a href="{% url 'register' %}">Register</a></p>
         </form>
-        <p>Not a user? <a href="{% url 'register' %}">Register</a></p>
-    </div>
+    </main>
 </body>
 </html>
