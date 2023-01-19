@@ -7,13 +7,13 @@
 
         <h2>{{ viewed_user.first_name }} {{ viewed_user.last_name }} @{{ viewed_user.username }}
         {% if viewed_user == user %}
-            <button class="btn btn-outline-primary" disabled>You</button>
+            <button class="btn btn-outline-primary my-3" disabled>You</button>
         {% elif user.person in viewed_user.person.friends.all %}
-            <a class="btn btn-outline-primary" href="{% url 'end_friendship' viewed_user.username %}">End friendship</a>
+            <a class="btn btn-outline-primary my-3" href="{% url 'end_friendship' viewed_user.username %}">End friendship</a>
         {% elif user.person in viewed_user.requestprofile.friend_requests.all %}
-            <button class="btn btn-outline-primary" disabled>Pending friend request</button>
+            <button class="btn btn-outline-primary my-3" disabled>Pending friend request</button>
         {% else %}
-            <a class="btn btn-primary" href="{% url 'send_request' viewed_user.username %}"><strong>Send friend request</strong></a>
+            <a class="btn btn-primary my-3" href="{% url 'send_request' viewed_user.username %}"><strong>Send friend request</strong></a>
         {% endif %}
         </h2>
         {% if post_list %}
@@ -25,16 +25,18 @@
             <div id="{{ post.0.id }}">
                 <hr>
                 <p>
-                    Published on {{ post.0.date.date }} by <a href="{% url 'user' user.username %}">
+                    Published on {{ post.0.date.date }} by <a href="{% url 'user' viewed_user.username %}">
                     {{ viewed_user.first_name }} {{ viewed_user.last_name }}</a> @{{ viewed_user.username }}
-                    {% if viewed_user == user %}&nbsp;<a href="{% url 'edit_post' post.0.id %}" class="text-secondary"><i class="bi bi-pencil-square"></i></a>&nbsp;
-                        <a class="text-secondary" data-bs-toggle="modal" data-bs-target="#deleteModal{{ post.0.id }}"><i class="bi bi-trash-fill"></i></a>
+                    {% if viewed_user == user %}&nbsp;<a href="{% url 'edit_post' post.0.id %}" class="lead text-secondary align-middle text-decoration-none">
+                        <i class="bi bi-pencil-square"></i></a>&nbsp;
+                        <a class="lead text-secondary align-middle text-decoration-none" data-bs-toggle="modal" data-bs-target="#deleteModal{{ post.0.id }}"
+                           style="cursor: pointer"><i class="bi bi-trash-fill"></i></a>
                         <div class="modal fade" tabindex="-1" role="dialog" id="deleteModal{{ post.0.id }}">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content rounded-3 shadow">
                                     <div class="modal-body p-4 text-center">
                                         <h5 class="mb-0">Are you sure?</h5>
-                                        <p class="mb-0">If you delete the post, you'll not be able to bring it back</p>
+                                        <p class="mb-0">If you delete the post, you won't be able to bring it back</p>
                                     </div>
                                     <div class="modal-footer flex-nowrap p-0">
                                         <a class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-end" href="{% url 'delete_post' post.0.id %}"><strong>Yes, I'm sure</strong></a>
@@ -50,13 +52,15 @@
                     {{ line }}<br>
                 {% endfor %}
                 </p>
-                <p>
+                <p class="lead text-primary">
                     {% if user.likeprofile in post.0.likeprofile_set.all %}
-                        <a class="like-icon" id="like-{{ post.0.id }}" onclick="dislike_{{ post.0.id }}()"><i class="bi bi-star-fill lead text-danger"></i></a>
+                        <a id="like-{{ post.0.id }}" onclick="dislike_{{ post.0.id }}()"><i class="bi bi-star-fill"></i></a>
                     {% else %}
-                        <a class="like-icon" id="like-{{ post.0.id }}" onclick="like_{{ post.0.id }}()"><i class="bi bi-star lead text-danger"></i></a>
+                        <a id="like-{{ post.0.id }}" onclick="like_{{ post.0.id }}()"><i class="bi bi-star"></i></a>
                     {% endif %}
-                    <span id="like-count-{{ post.0.id }}">{{ post.2 }}</span>
+                    <span id="like-count-{{ post.0.id }}">{{ post.2 }}</span><span class="mx-3"></span>
+                    <a href="{% url 'post_page' post.0.id %}" class="text-primary text-decoration-none"><i class="bi bi-chat-square"></i>
+                    {{ post.3 }}</a>
                 </p>
             </div>
             <script>
@@ -65,7 +69,7 @@
                         data: "id=" + {{ post.0.id }},
                         url: "{% url 'like' %}",
                         success: function (response) {
-                            $("#like-" + {{ post.0.id }}).html('<i class="bi bi-star-fill lead text-danger"></i>');
+                            $("#like-" + {{ post.0.id }}).html('<i class="bi bi-star-fill lead"></i>');
                             $("#like-" + {{ post.0.id }}).attr("onclick", "dislike_{{ post.0.id }}()");
                             $("#like-count-" + {{ post.0.id }}).html(response.new_likes)
                         },
@@ -79,7 +83,7 @@
                         data: "id=" + {{ post.0.id }},
                         url: "{% url 'dislike' %}",
                         success: function (response) {
-                            $("#like-" + {{ post.0.id }}).html('<i class="bi bi-star lead text-danger"></i>');
+                            $("#like-" + {{ post.0.id }}).html('<i class="bi bi-star lead"></i>');
                             $("#like-" + {{ post.0.id }}).attr("onclick", "like_{{ post.0.id }}()");
                             $("#like-count-" + {{ post.0.id }}).html(response.new_likes)
                         },

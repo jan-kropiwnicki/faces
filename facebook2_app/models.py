@@ -30,6 +30,14 @@ class Post(models.Model):
     date = models.DateTimeField()
 
 
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    author = models.ForeignKey(Person, on_delete=models.CASCADE)
+    content = models.TextField()
+    date = models.DateTimeField()
+
+
 class LikeProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     liked_posts = models.ManyToManyField(Post)
+    liked_comments = models.ManyToManyField(Comment)

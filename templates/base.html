@@ -13,73 +13,81 @@
             crossorigin="anonymous"></script>
     <title>{% block title %}{% endblock %}Faces</title>
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <style>
+        header {
+            top: 57px !important;
+        }
+        body {
+            padding-top: 9rem;
+        }
+        @media only screen and (max-width: 767px) {
+            body {
+                padding-top: 12.5rem;
+            }
+        }
+    </style>
 </head>
-<body style="padding-top: 9rem">
-    <div class="fixed-top">
-        <nav class="navbar navbar-expand-md py-2 bg-light border-bottom">
-            <div class="container d-flex flex-wrap">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    {% if not user.is_authenticated %}
-                        <ul class="nav me-auto">
-                            <li class="nav-item"><a href="#" class="nav-link link-dark px-2 active" aria-current="page">Home</a></li>
-                            <li class="nav-item"><a href="#" class="nav-link link-dark px-2">About</a></li>
-                            <li class="nav-item"><a href="#" class="nav-link link-dark px-2">FAQs</a></li>
-                            <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Contact</a></li>
+<body>
+    <header class="py-3 mb-4 border-bottom bg-light fixed-top">
+        <div class="container d-flex flex-wrap justify-content-center">
+            <a href="/" class="d-flex align-items-center me-5 me-lg-auto text-dark text-decoration-none">
+                <img class="bi me-1" height="38" src="{% static 'img/faces.svg' %}" alt="Faces logo">
+            </a>
+            {% if user.is_authenticated %}
+                <form method="get" class="d-flex mt-3 mt-md-0" role="search" action="{% url 'search_results' %}">
+                    <input class="form-control me-2" name="q" type="search" placeholder="Search..." aria-label="Search"
+                           value="{% block query %}{% endblock %}">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                </form>
+            {% endif %}
+        </div>
+    </header>
+    <nav class="navbar navbar-expand-md py-2 bg-light border-bottom fixed-top">
+        <div class="container d-flex flex-wrap">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                {% if not user.is_authenticated %}
+                    <ul class="nav me-auto">
+                        <li class="nav-item"><a href="#" class="nav-link link-dark px-2 active" aria-current="page">Home</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link link-dark px-2">About</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link link-dark px-2">FAQs</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Contact</a></li>
+                    </ul>
+                    <ul class="nav">
+                        <li class="nav-item"><a href="{% url 'login' %}" class="nav-link link-dark px-2">Login</a></li>
+                        <li class="nav-item"><a href="{% url 'register' %}" class="nav-link link-dark px-2">Sign up</a></li>
+                    </ul>
+                {% else %}
+                    <ul class="nav me-auto">
+                        <li class="nav-item"><a href="{% url 'index' %}" class="nav-link link-dark px-2 active" aria-current="page">Home</a></li>
+                        <li class="nav-item"><a href="{% url 'friends' %}" class="nav-link link-dark px-2">Friends</a></li>
+                        <li class="nav-item"><a href="{% url 'create_post' %}" class="nav-link link-dark px-2">Create post</a></li>
+                    </ul>
+                    <div class="dropstart text-end">
+                        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://github.com/mdo.png" alt="{{ user.username }}" class="rounded-circle" width="32" height="32">
+                        </a>
+                        <ul class="dropdown-menu text-small">
+                            <li><h6 class="dropdown-header">Welcome, {{ user.first_name }}</h6></li>
+                            <li><a class="dropdown-item" href="#">Preferences</a></li>
+                            <li><a class="dropdown-item" href="{% url 'user' user.username %}">My profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}">Log out</a></li>
                         </ul>
-                        <ul class="nav">
-                            <li class="nav-item"><a href="{% url 'login' %}" class="nav-link link-dark px-2">Login</a></li>
-                            <li class="nav-item"><a href="{% url 'register' %}" class="nav-link link-dark px-2">Sign up</a></li>
-                        </ul>
-                    {% else %}
-                        <ul class="nav me-auto">
-                            <li class="nav-item"><a href="{% url 'index' %}" class="nav-link link-dark px-2 active" aria-current="page">Home</a></li>
-                            <li class="nav-item"><a href="{% url 'friends' %}" class="nav-link link-dark px-2">Friends</a></li>
-                            <li class="nav-item"><a href="{% url 'create_post' %}" class="nav-link link-dark px-2">Create post</a></li>
-                        </ul>
-                        <div class="dropstart text-end">
-                            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="https://github.com/mdo.png" alt="{{ user.username }}" class="rounded-circle" width="32" height="32">
-                            </a>
-                            <ul class="dropdown-menu text-small">
-                                <li><h6 class="dropdown-header">Welcome, {{ user.first_name }}</h6></li>
-                                <li><a class="dropdown-item" href="#">Preferences</a></li>
-                                <li><a class="dropdown-item" href="{% url 'user' user.username %}">My profile</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{% url 'logout' %}">Log out</a></li>
-                            </ul>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </nav>
-        <header class="py-3 mb-4 border-bottom bg-light">
-            <div class="container d-flex flex-wrap justify-content-center">
-                <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
-                    <img class="bi me-1" height="38" src="{% static 'img/postit.png' %}" alt="Faces logo">
-                </a>
-                {% if user.is_authenticated %}
-                    <form method="get" class="d-flex" role="search" action="{% url 'search_results' %}">
-                        <input class="form-control me-2" name="q" type="search" placeholder="Search..." aria-label="Search"
-                               value="{% block query %}{% endblock %}">
-                        <button class="btn btn-outline-danger" type="submit">Search</button>
-                    </form>
+                    </div>
                 {% endif %}
             </div>
-        </header>
-    </div>
+        </div>
+    </nav>
     <div class="container-sm">
         <main>
             {% block content %}
             {% endblock %}
         </main>
-        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-            <p class="col-md-4 mb-0 text-muted">Made with ❤️ by Jan Kropiwnicki</p>
-            <a href="{% url 'index' %}" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-                <img src="{% static 'img/logo-g.png' %}" class="bi me-2" height="38" alt="Faces logo">
-            </a>
+        <footer class="py-3 my-4 border-top text-center text-muted">
+            Made with ❤️ by Jan Kropiwnicki
         </footer>
     </div>
 </body>

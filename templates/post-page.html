@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <p>
+            Published on {{ post.date.date }} by <a href="{% url 'user' post.author.user.username %}">
+            {{ post.author.user.first_name }} {{ post.author.user.last_name }}</a>
+            @{{ post.author.user.username }}
+        </p>
+        <p>
+            {% for line in post_content %}
+                {{ line }}<br>
+            {% endfor %}
+        </p>
+        <hr>
+        <span class="lead text-primary">{{ comment_count }} comment{% if comment_count != 1 %}s{% endif %}</span>
+        <div class="d-flex justify-content-center">
+            <form method="post" class="w-75 mt-3" action="{% url 'submit_comment' post.id %}">
+                {% csrf_token %}
+                <textarea class="form-control" name="comment" placeholder="Write a comment..." rows="3"></textarea>
+                <button class="btn btn-outline-primary mt-2 mb-4" type="submit">Submit</button>
+            </form>
+        </div>
+        <div class="row g-4">
+            {% for comment in post.comment_set.all %}
+                <div class="col-md-6">
+                    <div class="p-3 card bg-light">
+                        <p>
+                            Published on {{ comment.date.date }} by <a href="{% url 'user' comment.author.user.username %}">
+                            {{ comment.author.user.first_name }} {{ comment.author.user.last_name }}</a>
+                            @{{ comment.author.user.username }}
+                        </p>
+                        <p>{{ comment.content }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

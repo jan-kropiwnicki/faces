@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Post
+from .models import Post, Comment
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.http import HttpResponseRedirect, JsonResponse
@@ -16,7 +16,8 @@ def index(request):
             post_list_plain += list(friend.post_set.all())
         post_list_plain.sort(key=lambda x: x.date, reverse=True)
         for post in post_list_plain:
-            post_list += [[post, post.content.split("\r\n"), len(post.likeprofile_set.all())]]
+            post_list += [[post, post.content.split("\r\n"), len(post.likeprofile_set.all()),
+                           len(post.comment_set.all())]]
         friend_requests = request.user.requestprofile.friend_requests.all()
     return render(request, "index.html", {
         "post_list": post_list, "friend_requests": friend_requests, "friend_requests_len": len(friend_requests)
@@ -74,7 +75,7 @@ def user(request, username):
     post_list = []
     post_list_plain = viewed_user.person.post_set.order_by("-date")
     for post in post_list_plain:
-        post_list += [[post, post.content.split("\r\n"), len(post.likeprofile_set.all())]]
+        post_list += [[post, post.content.split("\r\n"), len(post.likeprofile_set.all()), len(post.comment_set.all())]]
     return render(request, "user.html", {"viewed_user": viewed_user, "post_list": post_list})
 
 
@@ -166,3 +167,19 @@ def register(request):
             return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, 'registration/register.html', {'form': form})
+
+
+def post_page(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    return render(request, 'post-page.html', {"post": post, "post_content": post.content.split("\r\n"), "like_count":
+                  len(post.likeprofile_set.all()), "comment_count": len(post.comment_set.all())})
+
+
+def submit_comment(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    content = request.POST["comment"]
+    author = request.user.person
+    date = datetime.now()
+    comment = Comment(post=post, content=content, author=author, date=date)
+    comment.save()
+    return HttpResponseRedirect(reverse("post_page", args=[post_id]))

@@ -32,13 +32,15 @@
                     {{ line }}<br>
                 {% endfor %}
                 </p>
-                <p>
+                <p class="lead text-primary">
                     {% if user.likeprofile in post.0.likeprofile_set.all %}
-                        <a class="like-icon" id="like-{{ post.0.id }}" onclick="dislike_{{ post.0.id }}()"><i class="bi bi-star-fill lead text-danger"></i></a>
+                        <a id="like-{{ post.0.id }}" onclick="dislike_{{ post.0.id }}()"><i class="bi bi-star-fill"></i></a>
                     {% else %}
-                        <a class="like-icon" id="like-{{ post.0.id }}" onclick="like_{{ post.0.id }}()"><i class="bi bi-star lead text-danger"></i></a>
+                        <a id="like-{{ post.0.id }}" onclick="like_{{ post.0.id }}()"><i class="bi bi-star"></i></a>
                     {% endif %}
-                    <span id="like-count-{{ post.0.id }}">{{ post.2 }}</span>
+                    <span id="like-count-{{ post.0.id }}">{{ post.2 }}</span><span class="mx-3"></span>
+                    <a href="{% url 'post_page' post.0.id %}" class="text-primary text-decoration-none"><i class="bi bi-chat-square"></i>
+                    {{ post.3 }}</a>
                 </p>
             </div>
             <script>
@@ -47,7 +49,7 @@
                         data: "id=" + {{ post.0.id }},
                         url: "{% url 'like' %}",
                         success: function (response) {
-                            $("#like-" + {{ post.0.id }}).html('<i class="bi bi-star-fill lead text-danger"></i>');
+                            $("#like-" + {{ post.0.id }}).html('<i class="bi bi-star-fill lead"></i>');
                             $("#like-" + {{ post.0.id }}).attr("onclick", "dislike_{{ post.0.id }}()");
                             $("#like-count-" + {{ post.0.id }}).html(response.new_likes)
                         },
@@ -61,7 +63,7 @@
                         data: "id=" + {{ post.0.id }},
                         url: "{% url 'dislike' %}",
                         success: function (response) {
-                            $("#like-" + {{ post.0.id }}).html('<i class="bi bi-star lead text-danger"></i>');
+                            $("#like-" + {{ post.0.id }}).html('<i class="bi bi-star lead"></i>');
                             $("#like-" + {{ post.0.id }}).attr("onclick", "like_{{ post.0.id }}()");
                             $("#like-count-" + {{ post.0.id }}).html(response.new_likes)
                         },
