@@ -10,6 +10,9 @@
         <h2>
             <img src="{% static viewed_user.profilepicture.url %}" alt="{{ viewed_user.username }}" class="rounded-circle me-1" width="64" height="64">
             {{ viewed_user.first_name }} {{ viewed_user.last_name }} @{{ viewed_user.username }}
+        {% if viewed_user.is_staff %}
+            <span class="lead text-primary"><i class="bi bi-patch-check-fill"></i> Faces staff</span>
+        {% endif %}
         {% if viewed_user == user %}
             <button class="btn btn-outline-primary my-3" disabled>You</button>
         {% elif user.person in viewed_user.person.friends.all %}

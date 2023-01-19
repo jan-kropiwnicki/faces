@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block content %}
     {% if user.is_authenticated %}
         <p>
-            Published on {{ post.date.date }} by <a href="{% url 'user' post.author.user.username %}">
+            Published on {{ post.date.date }} by
+            <img src="{% static post.author.user.profilepicture.url %}" alt="{{ post.0.author.user.username }}" class="rounded-circle mx-1" width="32" height="32">
+            <a href="{% url 'user' post.author.user.username %}">
             {{ post.author.user.first_name }} {{ post.author.user.last_name }}</a>
             @{{ post.author.user.username }}
         </p>
@@ -26,7 +30,9 @@
                 <div class="col-md-6">
                     <div class="p-3 card bg-light">
                         <p>
-                            Published on {{ comment.object.date.date }} by <a href="{% url 'user' comment.object.author.user.username %}">
+                            Published on {{ comment.object.date.date }} by
+                            <img src="{% static comment.object.author.user.profilepicture.url %}" alt="{{ post.0.author.user.username }}" class="rounded-circle mx-1" width="32" height="32">
+                            <a href="{% url 'user' comment.object.author.user.username %}">
                             {{ comment.object.author.user.first_name }} {{ comment.object.author.user.last_name }}</a>
                             @{{ comment.object.author.user.username }}
                         </p>
