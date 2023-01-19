@@ -38,8 +38,7 @@
             <p>This user has no posts.</p>
         {% endif %}
         {% for post in post_list %}
-            <div id="{{ post.0.id }}">
-                <hr>
+            <div id="{{ post.0.id }}" class="card bg-light my-3 p-3">
                 <p>
                     Published on {{ post.0.date.date }} by
                     <img src="{% static post.0.author.user.profilepicture.url %}" alt="{{ post.0.author.user.username }}" class="rounded-circle mx-1" width="32" height="32">
@@ -70,7 +69,7 @@
                     {{ line }}<br>
                 {% endfor %}
                 </p>
-                <p class="lead text-primary">
+                <p class="lead text-primary mb-0">
                     {% if user.likeprofile in post.0.likeprofile_set.all %}
                         <a id="like-{{ post.0.id }}" onclick="dislike_{{ post.0.id }}()"><i class="bi bi-star-fill"></i></a>
                     {% else %}
