@@ -17,7 +17,7 @@
         <div class="d-flex justify-content-center">
             <form method="post" class="w-75 mt-3" action="{% url 'submit_comment' post.id %}">
                 {% csrf_token %}
-                <textarea class="form-control" name="comment" placeholder="Write a comment..." rows="3"></textarea>
+                <textarea class="form-control" name="comment" placeholder="Write a comment..." rows="3" maxlength="1024" style="resize: none"></textarea>
                 <button class="btn btn-outline-primary mt-2 mb-4" type="submit">Submit</button>
             </form>
         </div>
