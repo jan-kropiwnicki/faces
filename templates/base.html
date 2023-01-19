@@ -36,7 +36,7 @@
             {% if user.is_authenticated %}
                 <form method="get" class="d-flex mt-3 mt-md-0" role="search" action="{% url 'search_results' %}">
                     <input class="form-control me-2" name="q" type="search" placeholder="Search..." aria-label="Search"
-                           value="{% block query %}{% endblock %}">
+                           value="{% block query %}{% endblock %}" required>
                     <button class="btn btn-outline-primary" type="submit">Search</button>
                 </form>
             {% endif %}
