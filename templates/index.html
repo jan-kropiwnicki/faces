@@ -9,18 +9,14 @@
 {% block content %}
     {% if user.is_authenticated %}
         <h2>Welcome, {{ user.first_name }}!</h2>
-        {% if friend_requests_len > 3 %}
-            <p>You have {{ friend_requests_len }} friend requests! <a href="#">See more</a></p>
-        {% elif friend_requests_len > 0 %}
-            {% for friend_request in friend_requests %}
-                <p>
-                    {{ friend_request.user.first_name }} {{ friend_request.user.last_name }}
-                    @{{ friend_request.user.username }} sent you a friend request!
-                    <a href="{% url 'accept_request' friend_request.user.username %}">Accept</a>
-                    <a href="{% url 'reject_request' friend_request.user.username %}">Decline</a>
-                </p>
-            {% endfor %}
-        {% endif %}
+        {% for friend_request in friend_requests %}
+            <p>
+                <a href="{% url 'user' friend_request.user.username %}">{{ friend_request.user.first_name }} {{ friend_request.user.last_name }}</a>
+                @{{ friend_request.user.username }} sent you a friend request!
+                <a href="{% url 'accept_request' friend_request.user.username %}" class="btn btn-primary ms-3">Accept</a>
+                <a href="{% url 'reject_request' friend_request.user.username %}" class="btn btn-secondary">Decline</a>
+            </p>
+        {% endfor %}
         {% for post in post_list %}
             <div id="{{ post.0.id }}">
                 <hr>
