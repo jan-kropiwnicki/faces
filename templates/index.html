@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}
     {% if user.is_authenticated %}
         Main page &ndash;
@@ -11,7 +13,8 @@
         <h2>Welcome, {{ user.first_name }}!</h2>
         {% for friend_request in friend_requests %}
             <p>
-                <a href="{% url 'user' friend_request.user.username %}">{{ friend_request.user.first_name }} {{ friend_request.user.last_name }}</a>
+                <a href="{% url 'user' friend_request.user.username %}">
+                    <img src="{% static friend_request.user.profilepicture.url %}" alt="{{ friend_request.user.username }}" class="rounded-circle me-1" width="32" height="32">{{ friend_request.user.first_name }} {{ friend_request.user.last_name }}</a>
                 @{{ friend_request.user.username }} sent you a friend request!
                 <a href="{% url 'accept_request' friend_request.user.username %}" class="btn btn-primary ms-3">Accept</a>
                 <a href="{% url 'reject_request' friend_request.user.username %}" class="btn btn-secondary">Decline</a>
@@ -20,7 +23,9 @@
         {% for post in post_list %}
             <div id="{{ post.0.id }}">
                 <hr>
-                <p>Published on {{ post.0.date.date }} by <a href="{% url 'user' post.0.author.user.username %}">
+                <p>Published on {{ post.0.date.date }} by
+                    <img src="{% static post.0.author.user.profilepicture.url %}" alt="{{ post.0.author.user.username }}" class="rounded-circle mx-1" width="32" height="32">
+                    <a href="{% url 'user' post.0.author.user.username %}">
                     {{ post.0.author.user.first_name }} {{ post.0.author.user.last_name }}</a>
                     @{{ post.0.author.user.username }}</p>
                 <p>

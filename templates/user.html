@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}{% if viewed_user == user %}My{% else %}{{ viewed_user.first_name }}'s{% endif %} profile &ndash; {% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
 
-        <h2>{{ viewed_user.first_name }} {{ viewed_user.last_name }} @{{ viewed_user.username }}
+        <h2>
+            <img src="{% static viewed_user.profilepicture.url %}" alt="{{ viewed_user.username }}" class="rounded-circle me-1" width="64" height="64">
+            {{ viewed_user.first_name }} {{ viewed_user.last_name }} @{{ viewed_user.username }}
         {% if viewed_user == user %}
             <button class="btn btn-outline-primary my-3" disabled>You</button>
         {% elif user.person in viewed_user.person.friends.all %}
@@ -37,7 +41,9 @@
             <div id="{{ post.0.id }}">
                 <hr>
                 <p>
-                    Published on {{ post.0.date.date }} by <a href="{% url 'user' viewed_user.username %}">
+                    Published on {{ post.0.date.date }} by
+                    <img src="{% static post.0.author.user.profilepicture.url %}" alt="{{ post.0.author.user.username }}" class="rounded-circle mx-1" width="32" height="32">
+                    <a href="{% url 'user' viewed_user.username %}">
                     {{ viewed_user.first_name }} {{ viewed_user.last_name }}</a> @{{ viewed_user.username }}
                     {% if viewed_user == user %}&nbsp;<a href="{% url 'edit_post' post.0.id %}" class="lead text-secondary align-middle text-decoration-none">
                         <i class="bi bi-pencil-square"></i></a>&nbsp;
