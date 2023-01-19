@@ -39,5 +39,7 @@ urlpatterns = [
     path('<int:post_id>/submit_comment', facebook2_app.views.submit_comment, name="submit_comment"),
     path('like', facebook2_app.views.like, name="like"),
     path('dislike', facebook2_app.views.dislike, name="dislike"),
+    path('like_comment', facebook2_app.views.like_comment, name="like_comment"),
+    path('dislike_comment', facebook2_app.views.dislike_comment, name="dislike_comment"),
     path('s/', facebook2_app.views.search, name="search_results"),
 ]

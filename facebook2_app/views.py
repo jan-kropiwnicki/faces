@@ -178,7 +178,9 @@ def register(request):
 def post_page(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     return render(request, 'post-page.html', {"post": post, "post_content": post.content.split("\r\n"), "like_count":
-                  len(post.likeprofile_set.all()), "comment_count": len(post.comment_set.all())})
+                  len(post.likeprofile_set.all()), "comment_count": len(post.comment_set.all()),
+                                              "comments": [{"object": x, "like_count": len(x.likeprofile_set.all())}
+                                                           for x in post.comment_set.all()]})
 
 
 def submit_comment(request, post_id):
@@ -188,4 +190,23 @@ def submit_comment(request, post_id):
     date = datetime.now()
     comment = Comment(post=post, content=content, author=author, date=date)
     comment.save()
+    comment.likeprofile_set.add(request.user.likeprofile)
+    comment.save()
     return HttpResponseRedirect(reverse("post_page", args=[post_id]))
+
+
+def like_comment(request):
+    comment_id = request.GET.get("id")
+    comment = get_object_or_404(Comment, id=comment_id)
+    if request.user.is_authenticated:
+        comment.likeprofile_set.add(request.user.likeprofile)
+    return JsonResponse({"new_likes": len(comment.likeprofile_set.all())})
+
+
+def dislike_comment(request):
+    comment_id = request.GET.get("id")
+    comment = get_object_or_404(Comment, id=comment_id)
+    if request.user.is_authenticated:
+        comment.likeprofile_set.remove(request.user.likeprofile)
+    return JsonResponse({"new_likes": len(comment.likeprofile_set.all())})
+

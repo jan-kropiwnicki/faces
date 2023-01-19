@@ -22,17 +22,55 @@
             </form>
         </div>
         <div class="row g-4">
-            {% for comment in post.comment_set.all %}
+            {% for comment in comments %}
                 <div class="col-md-6">
                     <div class="p-3 card bg-light">
                         <p>
-                            Published on {{ comment.date.date }} by <a href="{% url 'user' comment.author.user.username %}">
-                            {{ comment.author.user.first_name }} {{ comment.author.user.last_name }}</a>
-                            @{{ comment.author.user.username }}
+                            Published on {{ comment.object.date.date }} by <a href="{% url 'user' comment.object.author.user.username %}">
+                            {{ comment.object.author.user.first_name }} {{ comment.object.author.user.last_name }}</a>
+                            @{{ comment.object.author.user.username }}
                         </p>
-                        <p>{{ comment.content }}</p>
+                        <p>{{ comment.object.content }}</p>
+                        <p class="lead text-primary mb-0">
+                            {% if user.likeprofile in comment.object.likeprofile_set.all %}
+                                <a id="like-{{ comment.object.id }}" onclick="dislike_{{ comment.object.id }}()"><i class="bi bi-star-fill"></i></a>
+                            {% else %}
+                                <a id="like-{{ comment.object.id }}" onclick="like_{{ comment.object.id }}()"><i class="bi bi-star"></i></a>
+                            {% endif %}
+                            <span id="like-count-{{ comment.object.id }}">{{ comment.like_count }}</span><span class="mx-3"></span>
+                        </p>
                     </div>
                 </div>
+                <script>
+                function like_{{ comment.object.id }}() {
+                    $.ajax({
+                        data: "id=" + {{ comment.object.id }},
+                        url: "{% url 'like_comment' %}",
+                        success: function (response) {
+                            $("#like-" + {{ comment.object.id }}).html('<i class="bi bi-star-fill lead"></i>');
+                            $("#like-" + {{ comment.object.id }}).attr("onclick", "dislike_{{ comment.object.id }}()");
+                            $("#like-count-" + {{ comment.object.id }}).html(response.new_likes)
+                        },
+                        error: function (response) {
+                            console.log(response.responseJSON.errors)
+                        }
+                    });
+                }
+                function dislike_{{ comment.object.id }}() {
+                    $.ajax({
+                        data: "id=" + {{ comment.object.id }},
+                        url: "{% url 'dislike_comment' %}",
+                        success: function (response) {
+                            $("#like-" + {{ comment.object.id }}).html('<i class="bi bi-star lead"></i>');
+                            $("#like-" + {{ comment.object.id }}).attr("onclick", "like_{{ comment.object.id }}()");
+                            $("#like-count-" + {{ comment.object.id }}).html(response.new_likes)
+                        },
+                        error: function (response) {
+                            console.log(response.responseJSON.errors)
+                        }
+                    });
+                }
+            </script>
             {% endfor %}
         </div>
     {% endif %}
