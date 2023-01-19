@@ -52,5 +52,25 @@
             </div>
         </div>
     </div>
+    {% if form.errors %}
+        <div class="fixed-top px-3">
+            <div class="alert alert-danger m-auto mt-3" style="max-width: 600px">
+                <style>
+                    ul {
+                        list-style-type: none;
+                        padding: 0;
+                    }
+                </style>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <p class="mb-0">{{ error }}</p>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <p class="mb-0">{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
 </body>
 </html>
