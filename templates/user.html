@@ -15,6 +15,18 @@
         {% else %}
             <a class="btn btn-primary my-3" href="{% url 'send_request' viewed_user.username %}"><strong>Send friend request</strong></a>
         {% endif %}
+        {% if mutual_friend_count %}
+            <span class="lead">Friend of {% for friend in mutual_friends %}
+                {% if not forloop.counter %}
+                    ,
+                {% endif %}
+                {{ friend.user.first_name }} {{ friend.user.last_name }} @{{ friend.user.username }}
+            {% endfor %}
+            {% if mutual_friend_count > 3 %}
+                and {{ mutual_friend_count|add:'-3' }} more
+            {% endif %}
+            </span>
+        {% endif %}
         </h2>
         {% if post_list %}
             <p>{% if viewed_user == user %}Your{% else %}{{ viewed_user.first_name }}'s{% endif %} posts:</p>

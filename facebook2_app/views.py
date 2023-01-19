@@ -76,7 +76,13 @@ def user(request, username):
     post_list_plain = viewed_user.person.post_set.order_by("-date")
     for post in post_list_plain:
         post_list += [[post, post.content.split("\r\n"), len(post.likeprofile_set.all()), len(post.comment_set.all())]]
-    return render(request, "user.html", {"viewed_user": viewed_user, "post_list": post_list})
+    mutual_friends = []
+    viewed_user_friends = viewed_user.person.friends.all()
+    for friend in request.user.person.friends.all():
+        if friend in viewed_user_friends:
+            mutual_friends += [friend]
+    return render(request, "user.html", {"viewed_user": viewed_user, "post_list": post_list, "mutual_friends":
+                  mutual_friends, "mutual_friend_count": len(mutual_friends)})
 
 
 def send_request(request, username):
