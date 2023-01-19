@@ -15,7 +15,7 @@
         {% else %}
             <a class="btn btn-primary my-3" href="{% url 'send_request' viewed_user.username %}"><strong>Send friend request</strong></a>
         {% endif %}
-        {% if mutual_friend_count %}
+        {% if mutual_friend_count and viewed_user != user %}
             <span class="lead">Friend of {% for friend in mutual_friends %}
                 {% if not forloop.counter %}
                     ,
