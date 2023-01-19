@@ -210,3 +210,7 @@ def dislike_comment(request):
         comment.likeprofile_set.remove(request.user.likeprofile)
     return JsonResponse({"new_likes": len(comment.likeprofile_set.all())})
 
+
+def e404(request):
+    return render(request, '404.html', {})
+

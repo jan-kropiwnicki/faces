@@ -28,7 +28,7 @@ def user_is_created(sender, instance, created, **kwargs):
         LikeProfile.objects.create(user=instance)
         ProfilePicture.objects.create(user=instance, url='img/profiles/' +
                                                          ['blue.png', 'green.png', 'red.png', 'yellow.png',
-                                                          'violet.png'][random.randrange(5)])
+                                                          'violet.png', 'orange.png'][random.randrange(6)])
     else:
         instance.person.save()
 
