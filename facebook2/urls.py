@@ -43,4 +43,5 @@ urlpatterns = [
     path('dislike_comment', facebook2_app.views.dislike_comment, name="dislike_comment"),
     path('s/', facebook2_app.views.search, name="search_results"),
     path('preferences/', TemplateView.as_view(template_name="preferences.html"), name="preferences"),
+    path('notifications/', facebook2_app.views.notifications, name="notifications")
 ]

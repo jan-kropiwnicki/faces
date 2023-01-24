@@ -32,6 +32,14 @@ def submit_post(request):
     post.save()
     post.likeprofile_set.add(request.user.likeprofile)
     post.save()
+    for friend in request.user.person.friends.all():
+        friend.notifications += [
+            {"type": "new_post", "user": {
+                "first_name": request.user.first_name, "last_name": request.user.last_name,
+                "username": request.user.username
+            }, "id": post.id, "date": str(datetime.now().date())}
+        ]
+        friend.save()
     return HttpResponseRedirect(reverse("index"))
 
 
@@ -98,6 +106,14 @@ def accept_request(request, username):
         if person.user.username == username:
             request.user.requestprofile.friend_requests.remove(person)
             break
+    accepted_user.person.notifications += [{
+        "type": "accept_request",
+        "user": {
+            "first_name": request.user.first_name, "last_name": request.user.last_name,
+            "username": request.user.username
+        },
+        "id": "", "date": datetime.now()
+    }]
     return HttpResponseRedirect(reverse("index"))
 
 
@@ -105,6 +121,13 @@ def reject_request(request, username):
     for person in request.user.requestprofile.friend_requests.all():
         if person.user.username == username:
             request.user.requestprofile.friend_requests.remove(person)
+            person.notifications += [{
+                "type": "reject_request",
+                "user": {
+                    "first_name": request.user.first_name, "last_name": request.user.last_name,
+                    "username": request.user.username
+                },
+                "id": "", "date": datetime.now()}]
             break
     return HttpResponseRedirect(reverse("index"))
 
@@ -113,6 +136,14 @@ def end_friendship(request, username):
     for person in request.user.person.friends.all():
         if person.user.username == username:
             request.user.person.friends.remove(person)
+            person.notifications += [{
+                "type": "end_friendship",
+                "user": {
+                    "first_name": request.user.first_name, "last_name": request.user.last_name,
+                    "username": request.user.username
+                },
+                "id": "", "date": datetime.now()
+            }]
             break
     return HttpResponseRedirect(reverse("user", args=[username]))
 
@@ -192,6 +223,13 @@ def submit_comment(request, post_id):
     comment.save()
     comment.likeprofile_set.add(request.user.likeprofile)
     comment.save()
+    post.author.notifications += [{
+        "type": "new_comment",
+        "user": {
+            "first_name": request.user.first_name, "last_name": request.user.last_name,
+            "username": request.user.username
+        },
+        "id": post_id, "date": datetime.now()}]
     return HttpResponseRedirect(reverse("post_page", args=[post_id]))
 
 
@@ -214,3 +252,6 @@ def dislike_comment(request):
 def e404(request):
     return render(request, '404.html', {})
 
+
+def notifications(request):
+    return render(request, "notifications.html", {"notifications": request.user.person.notifications[::-1]})

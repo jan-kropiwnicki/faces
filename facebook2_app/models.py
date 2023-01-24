@@ -8,6 +8,7 @@ import random
 class Person(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     friends = models.ManyToManyField("self")
+    notifications = models.JSONField()
 
 
 class RequestProfile(models.Model):
@@ -23,12 +24,13 @@ class ProfilePicture(models.Model):
 @receiver(post_save, sender=User)
 def user_is_created(sender, instance, created, **kwargs):
     if created:
-        Person.objects.create(user=instance)
+        Person.objects.create(user=instance, notifications=[])
         RequestProfile.objects.create(user=instance)
         LikeProfile.objects.create(user=instance)
         ProfilePicture.objects.create(
             user=instance, url='img/profiles/' + ['blue.png', 'green.png', 'red.png', 'yellow.png', 'violet.png',
-                                                  'orange.png', 'cyan.png', 'olive.png', 'pink.png'][random.randrange(6)])
+                                                  'orange.png', 'cyan.png', 'olive.png', 'pink.png'][random.randrange(6)]
+        )
     else:
         instance.person.save()
 

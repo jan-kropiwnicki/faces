@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Notifications &ndash; {% endblock %}
+
+{% block content %}
+    {% for notification in notifications %}
+        <div class="card bg-light my-2 mx-5 p-3">
+            {% if notification.type == "new_post" %}
+                <p class="m-0 lead">
+                    <small class="text-muted">{{ notification.date }}</small>
+                    <a href="{% url 'user' notification.user.username %}">{{ notification.user.first_name }} {{ notification.user.last_name }}</a>
+                    @{{ notification.user.username }} published a new post!
+                    <a href="{% url 'post_page' notification.id %}">See more</a>
+                </p>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endblock %}
