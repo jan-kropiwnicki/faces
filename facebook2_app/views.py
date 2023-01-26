@@ -37,7 +37,7 @@ def submit_post(request):
             {"type": "new_post", "user": {
                 "first_name": request.user.first_name, "last_name": request.user.last_name,
                 "username": request.user.username
-            }, "id": post.id, "date": str(datetime.now().date())}
+            }, "id": post.id, "date": str(datetime.now().date()), "seen": False}
         ]
         friend.save()
     return HttpResponseRedirect(reverse("index"))
@@ -112,7 +112,7 @@ def accept_request(request, username):
             "first_name": request.user.first_name, "last_name": request.user.last_name,
             "username": request.user.username
         },
-        "id": "", "date": datetime.now()
+        "id": "", "date": datetime.now(), "seen": False
     }]
     return HttpResponseRedirect(reverse("index"))
 
@@ -127,7 +127,7 @@ def reject_request(request, username):
                     "first_name": request.user.first_name, "last_name": request.user.last_name,
                     "username": request.user.username
                 },
-                "id": "", "date": datetime.now()}]
+                "id": "", "date": datetime.now(), "seen": False}]
             break
     return HttpResponseRedirect(reverse("index"))
 
@@ -142,7 +142,7 @@ def end_friendship(request, username):
                     "first_name": request.user.first_name, "last_name": request.user.last_name,
                     "username": request.user.username
                 },
-                "id": "", "date": datetime.now()
+                "id": "", "date": datetime.now(), "seen": False
             }]
             break
     return HttpResponseRedirect(reverse("user", args=[username]))
@@ -229,7 +229,7 @@ def submit_comment(request, post_id):
             "first_name": request.user.first_name, "last_name": request.user.last_name,
             "username": request.user.username
         },
-        "id": post_id, "date": datetime.now()}]
+        "id": post_id, "date": datetime.now(), "seen": False}]
     return HttpResponseRedirect(reverse("post_page", args=[post_id]))
 
 
