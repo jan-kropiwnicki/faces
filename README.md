@@ -1,4 +1,4 @@
-![Faces logo](/home/jan/Desktop/eee/faces/static/img/faces.svg)
+![Faces logo](./static/img/faces.svg)
 
 # Faces - social media the right way
 
