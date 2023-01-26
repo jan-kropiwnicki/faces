@@ -9,6 +9,7 @@ class Person(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     friends = models.ManyToManyField("self")
     notifications = models.JSONField()
+    unread = models.PositiveIntegerField()
 
 
 class RequestProfile(models.Model):
@@ -24,7 +25,7 @@ class ProfilePicture(models.Model):
 @receiver(post_save, sender=User)
 def user_is_created(sender, instance, created, **kwargs):
     if created:
-        Person.objects.create(user=instance, notifications=[])
+        Person.objects.create(user=instance, notifications=[], unread=0)
         RequestProfile.objects.create(user=instance)
         LikeProfile.objects.create(user=instance)
         ProfilePicture.objects.create(

@@ -9,8 +9,31 @@
                 <p class="m-0 lead">
                     <small class="text-muted">{{ notification.date }}</small>
                     <a href="{% url 'user' notification.user.username %}">{{ notification.user.first_name }} {{ notification.user.last_name }}</a>
-                    @{{ notification.user.username }} published a new post!
-                    <a href="{% url 'post_page' notification.id %}">See more</a>
+                    @{{ notification.user.username }} published a <a href="{% url 'post_page' notification.id %}">new post</a>!
+                </p>
+            {% elif notification.type == "accept_request" %}
+                <p class="m-0 lead">
+                    <small class="text-muted">{{ notification.date }}</small>
+                    <a href="{% url 'user' notification.user.username %}">{{ notification.user.first_name }} {{ notification.user.last_name }}</a>
+                    @{{ notification.user.username }} accepted your friend request!
+                </p>
+            {% elif notification.type == "reject_request" %}
+                <p class="m-0 lead">
+                    <small class="text-muted">{{ notification.date }}</small>
+                    <a href="{% url 'user' notification.user.username %}">{{ notification.user.first_name }} {{ notification.user.last_name }}</a>
+                    @{{ notification.user.username }} rejected your friend request!
+                </p>
+            {% elif notification.type == "end_friendship" %}
+                <p class="m-0 lead">
+                    <small class="text-muted">{{ notification.date }}</small>
+                    <a href="{% url 'user' notification.user.username %}">{{ notification.user.first_name }} {{ notification.user.last_name }}</a>
+                    @{{ notification.user.username }} ended friendship with you!
+                </p>
+            {% elif notification.type == "new_comment" %}
+                <p class="m-0 lead">
+                    <small class="text-muted">{{ notification.date }}</small>
+                    <a href="{% url 'user' notification.user.username %}">{{ notification.user.first_name }} {{ notification.user.last_name }}</a>
+                    @{{ notification.user.username }} commented on <a href="{% url 'post_page' notification.id %}">your post</a>!
                 </p>
             {% endif %}
         </div>

@@ -37,8 +37,9 @@ def submit_post(request):
             {"type": "new_post", "user": {
                 "first_name": request.user.first_name, "last_name": request.user.last_name,
                 "username": request.user.username
-            }, "id": post.id, "date": str(datetime.now().date()), "seen": False}
+            }, "id": post.id, "date": str(datetime.now().date())}
         ]
+        friend.unread += 1
         friend.save()
     return HttpResponseRedirect(reverse("index"))
 
@@ -112,8 +113,10 @@ def accept_request(request, username):
             "first_name": request.user.first_name, "last_name": request.user.last_name,
             "username": request.user.username
         },
-        "id": "", "date": datetime.now(), "seen": False
+        "id": "", "date": str(datetime.now().date())
     }]
+    accepted_user.person.unread += 1
+    accepted_user.person.save()
     return HttpResponseRedirect(reverse("index"))
 
 
@@ -127,7 +130,9 @@ def reject_request(request, username):
                     "first_name": request.user.first_name, "last_name": request.user.last_name,
                     "username": request.user.username
                 },
-                "id": "", "date": datetime.now(), "seen": False}]
+                "id": "", "date": str(datetime.now().date())}]
+            person.unread += 1
+            person.save()
             break
     return HttpResponseRedirect(reverse("index"))
 
@@ -142,8 +147,10 @@ def end_friendship(request, username):
                     "first_name": request.user.first_name, "last_name": request.user.last_name,
                     "username": request.user.username
                 },
-                "id": "", "date": datetime.now(), "seen": False
+                "id": "", "date": str(datetime.now().date())
             }]
+            person.unread += 1
+            person.save()
             break
     return HttpResponseRedirect(reverse("user", args=[username]))
 
@@ -229,7 +236,9 @@ def submit_comment(request, post_id):
             "first_name": request.user.first_name, "last_name": request.user.last_name,
             "username": request.user.username
         },
-        "id": post_id, "date": datetime.now(), "seen": False}]
+        "id": post_id, "date": str(datetime.now().date())}]
+    post.author.unread += 1
+    post.author.save()
     return HttpResponseRedirect(reverse("post_page", args=[post_id]))
 
 
@@ -254,4 +263,7 @@ def e404(request):
 
 
 def notifications(request):
+    p = request.user.person
+    p.unread = 0
+    p.save()
     return render(request, "notifications.html", {"notifications": request.user.person.notifications[::-1]})
