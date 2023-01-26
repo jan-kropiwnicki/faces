@@ -1,5 +1,5 @@
 """
-WSGI config for facebook2 project.
+WSGI config for faces project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'facebook2.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'faces.settings')
 
 application = get_wsgi_application()
