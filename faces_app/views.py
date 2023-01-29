@@ -267,3 +267,15 @@ def notifications(request):
     p.unread = 0
     p.save()
     return render(request, "notifications.html", {"notifications": request.user.person.notifications[::-1]})
+
+
+def preferences(request):
+    return render(request, "preferences.html", {})
+
+
+def change_profile_picture(request):
+    color = request.POST["color"]
+    profile_picture = request.user.profilepicture
+    profile_picture.url = f"img/profiles/{color}.png"
+    profile_picture.save()
+    return HttpResponseRedirect(reverse("preferences"))

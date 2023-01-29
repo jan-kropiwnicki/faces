@@ -1,7 +1,37 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Preferences &ndash; {% endblock %}
 
 {% block content %}
-    <h2>There is nothing here... yet.</h2>
+    <style>
+
+    </style>
+    <h2>Profile picture</h2>
+    <form method="post" action="{% url 'change_profile_picture' %}">
+        {% csrf_token %}
+        <img src="{% static user.profilepicture.url %}" alt="{{ user.username }}" class="rounded-circle me-2" width="64" height="64">
+
+        <input type="radio" class="btn-check" name="color" id="red" value="red" autocomplete="off"
+               {% if user.profilepicture.url == 'img/profiles/red.png' %}checked{% endif %}>
+        <label class="btn btn-outline-danger" for="red">Red</label>
+
+        <input type="radio" class="btn-check" name="color" id="yellow" value="yellow" autocomplete="off"
+               {% if user.profilepicture.url == 'img/profiles/yellow.png' %}checked{% endif %}>
+        <label class="btn btn-outline-warning" for="yellow">Yellow</label>
+
+        <input type="radio" class="btn-check" name="color" id="blue" value="blue" autocomplete="off"
+               {% if user.profilepicture.url == 'img/profiles/blue.png' %}checked{% endif %}>
+        <label class="btn btn-outline-primary" for="blue">Blue</label>
+
+        <input type="radio" class="btn-check" name="color" id="green" value="green" autocomplete="off"
+               {% if user.profilepicture.url == 'img/profiles/green.png' %}checked{% endif %}>
+        <label class="btn btn-outline-success" for="green">Green</label>
+
+        <input type="radio" class="btn-check" name="color" id="violet" value="violet" autocomplete="off"
+               {% if user.profilepicture.url == 'img/profiles/violet.png' %}checked{% endif %}>
+        <label class="btn btn-outline-info" for="violet">Violet</label>
+
+        <button type="submit" class="btn btn-secondary ms-2">Submit</button>
+    </form>
 {% endblock %}

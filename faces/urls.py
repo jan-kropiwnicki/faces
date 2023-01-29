@@ -42,6 +42,7 @@ urlpatterns = [
     path('like_comment', faces_app.views.like_comment, name="like_comment"),
     path('dislike_comment', faces_app.views.dislike_comment, name="dislike_comment"),
     path('s/', faces_app.views.search, name="search_results"),
-    path('preferences/', TemplateView.as_view(template_name="preferences.html"), name="preferences"),
-    path('notifications/', faces_app.views.notifications, name="notifications")
+    path('preferences/', faces_app.views.preferences, name="preferences"),
+    path('notifications/', faces_app.views.notifications, name="notifications"),
+    path('change_profile_picture/', faces_app.views.change_profile_picture, name="change_profile_picture"),
 ]
