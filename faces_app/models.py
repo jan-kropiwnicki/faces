@@ -11,6 +11,20 @@ class Person(models.Model):
     notifications = models.JSONField()
     unread = models.PositiveIntegerField()
 
+    # post visibility
+    POST_VIS_FRIENDS = '0'
+    POST_VIS_FRIENDS_FRIENDS = '1'
+    POST_VIS_EVERYONE = '2'
+    POST_VIS_CHOICES = [
+        (POST_VIS_FRIENDS, "Friends"),
+        (POST_VIS_FRIENDS_FRIENDS, "Friends' friends"),
+        (POST_VIS_EVERYONE, "Everyone"),
+    ]
+    post_vis = models.PositiveIntegerField(
+        choices=POST_VIS_CHOICES,
+        default=POST_VIS_FRIENDS
+    )
+
 
 class RequestProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

@@ -45,4 +45,5 @@ urlpatterns = [
     path('preferences/', faces_app.views.preferences, name="preferences"),
     path('notifications/', faces_app.views.notifications, name="notifications"),
     path('change_profile_picture/', faces_app.views.change_profile_picture, name="change_profile_picture"),
+    path('change_post_visibility/', faces_app.views.change_post_visibility, name="change_post_visibility")
 ]

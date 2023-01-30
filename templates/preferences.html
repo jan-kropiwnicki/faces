@@ -4,12 +4,10 @@
 {% block title %}Preferences &ndash; {% endblock %}
 
 {% block content %}
-    <style>
-
-    </style>
-    <h2>Profile picture</h2>
-    <form method="post" action="{% url 'change_profile_picture' %}">
+    <h2>Preferences</h2>
+    <form method="post" action="{% url 'change_profile_picture' %}" class="border-top p-3">
         {% csrf_token %}
+        <p class="lead">Change profile picture</p>
         <img src="{% static user.profilepicture.url %}" alt="{{ user.username }}" class="rounded-circle me-2" width="64" height="64">
 
         <input type="radio" class="btn-check" name="color" id="red" value="red" autocomplete="off"
@@ -31,6 +29,24 @@
         <input type="radio" class="btn-check" name="color" id="violet" value="violet" autocomplete="off"
                {% if user.profilepicture.url == 'img/profiles/violet.png' %}checked{% endif %}>
         <label class="btn btn-outline-info" for="violet">Violet</label>
+
+        <button type="submit" class="btn btn-secondary ms-2">Submit</button>
+    </form>
+    <form method="post" action="{% url 'change_post_visibility' %}" class="border-top p-3">
+        {% csrf_token %}
+        <p class="lead">Who can see your posts?</p>
+
+        <input type="radio" class="btn-check" name="post_vis" id="friends" value="friends" autocomplete="off"
+               {% if user.person.post_vis == 0 %}checked{% endif %}>
+        <label class="btn btn-outline-primary" for="friends">Friends</label>
+
+        <input type="radio" class="btn-check" name="post_vis" id="friends-friends" value="friends-friends" autocomplete="off"
+               {% if user.person.post_vis == 1 %}checked{% endif %}>
+        <label class="btn btn-outline-primary" for="friends-friends">Friends' friends</label>
+
+        <input type="radio" class="btn-check" name="post_vis" id="everyone" value="everyone" autocomplete="off"
+               {% if user.person.post_vis == 2 %}checked{% endif %}>
+        <label class="btn btn-outline-primary" for="everyone">Everyone</label>
 
         <button type="submit" class="btn btn-secondary ms-2">Submit</button>
     </form>

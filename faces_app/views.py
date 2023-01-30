@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Post, Comment
+from .models import Post, Comment, Person
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.http import HttpResponseRedirect, JsonResponse
@@ -291,4 +291,17 @@ def change_profile_picture(request):
     profile_picture = request.user.profilepicture
     profile_picture.url = f"img/profiles/{color}.png"
     profile_picture.save()
+    return HttpResponseRedirect(reverse("preferences"))
+
+
+def change_post_visibility(request):
+    choice = request.POST["post_vis"]
+    person = request.user.person
+    if choice == "friends":
+        person.post_vis = Person.POST_VIS_FRIENDS
+    elif choice == "friends-friends":
+        person.post_vis = Person.POST_VIS_FRIENDS_FRIENDS
+    elif choice == "everyone":
+        person.post_vis = Person.POST_VIS_EVERYONE
+    person.save()
     return HttpResponseRedirect(reverse("preferences"))
