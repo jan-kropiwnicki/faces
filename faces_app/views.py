@@ -10,6 +10,7 @@ from .forms import RegisterForm
 def index(request):
     post_list = []
     friend_requests = []
+    new_people_you_may_know = []
     if request.user.is_authenticated:
         post_list_plain = []
         for friend in request.user.person.friends.all():
@@ -19,8 +20,20 @@ def index(request):
             post_list += [[post, post.content.split("\r\n"), len(post.likeprofile_set.all()),
                            len(post.comment_set.all())]]
         friend_requests = request.user.requestprofile.friend_requests.all()
+        people_you_may_know = []
+        for friend in request.user.person.friends.all():
+            people_you_may_know += friend.friends.all()
+        for person in people_you_may_know:
+            if person != request.user.person and person not in request.user.person.friends.all():
+                mutual_friends = 0
+                for friend in request.user.person.friends.all():
+                    if friend in person.friends.all():
+                        mutual_friends += 1
+                new_people_you_may_know += [{"object": person, "mutual_friends": mutual_friends}]
+        new_people_you_may_know.sort(key=lambda x: x["mutual_friends"], reverse=True)
     return render(request, "index.html", {
-        "post_list": post_list, "friend_requests": friend_requests, "friend_requests_len": len(friend_requests)
+        "post_list": post_list, "friend_requests": friend_requests, "friend_requests_len": len(friend_requests),
+        "people_you_may_know": new_people_you_may_know
     })
 
 

@@ -11,15 +11,20 @@
 {% block content %}
     {% if user.is_authenticated %}
         <h2>Welcome, {{ user.first_name }}!</h2>
-        {% for friend_request in friend_requests %}
-            <p>
-                <a href="{% url 'user' friend_request.user.username %}">
-                    <img src="{% static friend_request.user.profilepicture.url %}" alt="{{ friend_request.user.username }}" class="rounded-circle me-1" width="32" height="32">{{ friend_request.user.first_name }} {{ friend_request.user.last_name }}</a>
-                @{{ friend_request.user.username }} sent you a friend request!
-                <a href="{% url 'accept_request' friend_request.user.username %}" class="btn btn-primary ms-3">Accept</a>
-                <a href="{% url 'reject_request' friend_request.user.username %}" class="btn btn-secondary">Decline</a>
-            </p>
-        {% endfor %}
+        {% if people_you_may_know %}
+            <h4 class="border-top pt-2 mt-2">People you may know:</h4>
+            <div class="row row-cols-auto card mx-3 mx-md-5 p-2" style="height: 7.3rem; overflow-x: scroll;">
+            {% for person in people_you_may_know %}
+                <a class="card bg-light p-2 m-2 w-md-50 lead text-dark text-decoration-none" href="{% url 'user' person.object.user.username %}">
+                    <span>
+                        <img src="{% static person.object.user.profilepicture.url %}" class="col rounded-circle me-2" width="64">
+                        {{ person.object.user.first_name }} {{ person.object.user.last_name }}
+                        @{{ person.object.user.username }}
+                    </span>
+                </a>
+            {% endfor %}
+            </div>
+        {% endif %}
         {% for post in post_list %}
             <div id="{{ post.0.id }}" class="card bg-light my-3 p-3">
                 <p>Published on {{ post.0.date.date }} by
