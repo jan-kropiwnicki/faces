@@ -11,6 +11,15 @@
 {% block content %}
     {% if user.is_authenticated %}
         <h2>Welcome, {{ user.first_name }}!</h2>
+        {% for friend_request in friend_requests %}
+            <p>
+                <a href="{% url 'user' friend_request.user.username %}">
+                    <img src="{% static friend_request.user.profilepicture.url %}" alt="{{ friend_request.user.username }}" class="rounded-circle me-1" width="32" height="32">{{ friend_request.user.first_name }} {{ friend_request.user.last_name }}</a>
+                @{{ friend_request.user.username }} sent you a friend request!
+                <a href="{% url 'accept_request' friend_request.user.username %}" class="btn btn-primary ms-3">Accept</a>
+                <a href="{% url 'reject_request' friend_request.user.username %}" class="btn btn-secondary">Decline</a>
+            </p>
+        {% endfor %}
         {% if people_you_may_know %}
             <h4 class="border-top pt-2 mt-2">People you may know:</h4>
             <div class="row row-cols-auto card mx-3 mx-md-5 p-2" style="height: 7.3rem; overflow-x: scroll;">

@@ -5,6 +5,7 @@ from datetime import datetime
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from .forms import RegisterForm
+from django.templatetags.static import static
 
 
 def index(request):
@@ -49,8 +50,9 @@ def submit_post(request):
         friend.notifications += [
             {"type": "new_post", "user": {
                 "first_name": request.user.first_name, "last_name": request.user.last_name,
-                "username": request.user.username
-            }, "id": post.id, "date": str(datetime.now().date())}
+                "username": request.user.username, "url": reverse("user", args=[request.user.username]),
+                "profile_picture": static(request.user.profilepicture.url)
+            }, "id": post.id, "see_more": reverse("post_page", args=[post.id]), "date": str(datetime.now().date())}
         ]
         friend.unread += 1
         friend.save()
@@ -124,9 +126,10 @@ def accept_request(request, username):
         "type": "accept_request",
         "user": {
             "first_name": request.user.first_name, "last_name": request.user.last_name,
-            "username": request.user.username
+            "username": request.user.username, "url": reverse("user", args=[request.user.username]),
+            "profile_picture": static(request.user.profilepicture.url)
         },
-        "id": "", "date": str(datetime.now().date())
+        "date": str(datetime.now().date())
     }]
     accepted_user.person.unread += 1
     accepted_user.person.save()
@@ -141,9 +144,10 @@ def reject_request(request, username):
                 "type": "reject_request",
                 "user": {
                     "first_name": request.user.first_name, "last_name": request.user.last_name,
-                    "username": request.user.username
+                    "username": request.user.username, "url": reverse("user", args=[request.user.username]),
+                    "profile_picture": static(request.user.profilepicture.url)
                 },
-                "id": "", "date": str(datetime.now().date())}]
+                "date": str(datetime.now().date())}]
             person.unread += 1
             person.save()
             break
@@ -158,9 +162,10 @@ def end_friendship(request, username):
                 "type": "end_friendship",
                 "user": {
                     "first_name": request.user.first_name, "last_name": request.user.last_name,
-                    "username": request.user.username
+                    "username": request.user.username, "url": reverse("user", args=[request.user.username]),
+                    "profile_picture": static(request.user.profilepicture.url)
                 },
-                "id": "", "date": str(datetime.now().date())
+                "date": str(datetime.now().date())
             }]
             person.unread += 1
             person.save()
@@ -247,9 +252,10 @@ def submit_comment(request, post_id):
         "type": "new_comment",
         "user": {
             "first_name": request.user.first_name, "last_name": request.user.last_name,
-            "username": request.user.username
+            "username": request.user.username, "url": reverse("user", args=[request.user.username]),
+            "profile_picture": static(request.user.profilepicture.url)
         },
-        "id": post_id, "date": str(datetime.now().date())}]
+        "id": post_id, "see_more": reverse("post_page", args=[post_id]), "date": str(datetime.now().date())}]
     post.author.unread += 1
     post.author.save()
     return HttpResponseRedirect(reverse("post_page", args=[post_id]))
@@ -305,3 +311,13 @@ def change_post_visibility(request):
         person.post_vis = Person.POST_VIS_EVERYONE
     person.save()
     return HttpResponseRedirect(reverse("preferences"))
+
+
+def get_notification(request):
+    p = request.user.person
+    if p.unread:
+        p.unread = 0
+        p.save()
+        return JsonResponse({"notification": p.notifications[-1]})
+
+    return JsonResponse({"notification": False})
