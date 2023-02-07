@@ -89,7 +89,14 @@
             </div>
         </div>
     </nav>
-    <div class="container-sm">
+    <style>
+        @media (min-width: 1200px) {
+            .container-sm{
+                max-width: 900px;
+            }
+        }
+    </style>
+    <div class="container container-sm">
         <main>
             {% block content %}
             {% endblock %}
