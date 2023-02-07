@@ -10,32 +10,59 @@
         <h2>
             <img src="{% static viewed_user.profilepicture.url %}" alt="{{ viewed_user.username }}" class="rounded-circle me-1" width="64" height="64">
             {{ viewed_user.first_name }} {{ viewed_user.last_name }} @{{ viewed_user.username }}
-        {% if viewed_user.is_staff %}
-            <span class="lead text-primary"><i class="bi bi-patch-check-fill"></i> Faces staff</span>
-        {% endif %}
-        {% if viewed_user == user %}
-            <button class="btn btn-outline-primary my-3" disabled>You</button>
-        {% elif user.person in viewed_user.person.friends.all %}
-            <a class="btn btn-outline-primary my-3" href="{% url 'end_friendship' viewed_user.username %}">End friendship</a>
-        {% elif user.person in viewed_user.requestprofile.friend_requests.all %}
-            <button class="btn btn-outline-primary my-3" disabled>Pending friend request</button>
-        {% else %}
-            <a class="btn btn-primary my-3" href="{% url 'send_request' viewed_user.username %}"><strong>Send friend request</strong></a>
-        {% endif %}
-        {% if mutual_friend_count and viewed_user != user %}
-            <br>
-            <span class="lead">Friend of {% for friend in mutual_friends %}
-                {% if not forloop.counter %}
-                    ,
-                {% endif %}
-                {{ friend.user.first_name }} {{ friend.user.last_name }} @{{ friend.user.username }}
-            {% endfor %}
-            {% if mutual_friend_count > 3 %}
-                and {{ mutual_friend_count|add:'-3' }} more
+            {% if viewed_user.is_staff %}
+                <span class="lead text-primary"><i class="bi bi-patch-check-fill"></i> Faces staff</span>
             {% endif %}
-            </span>
-        {% endif %}
+            {% if viewed_user == user %}
+                <button class="btn btn-outline-primary my-3" disabled>You</button>
+            {% elif user.person in viewed_user.person.friends.all %}
+                <a class="btn btn-outline-primary my-3" href="{% url 'end_friendship' viewed_user.username %}">End friendship</a>
+            {% elif user.person in viewed_user.requestprofile.friend_requests.all %}
+                <button class="btn btn-outline-primary my-3" disabled>Pending friend request</button>
+            {% else %}
+                <a class="btn btn-primary my-3" href="{% url 'send_request' viewed_user.username %}"><strong>Send friend request</strong></a>
+            {% endif %}
+            {% if mutual_friend_count and viewed_user != user %}
+                <br>
+                <span class="lead">Friend of {% for friend in mutual_friends %}
+                    {% if not forloop.counter %}
+                        ,
+                    {% endif %}
+                    {{ friend.user.first_name }} {{ friend.user.last_name }} @{{ friend.user.username }}
+                {% endfor %}
+                {% if mutual_friend_count > 3 %}
+                    and {{ mutual_friend_count|add:'-3' }} more
+                {% endif %}
+                </span>
+            {% endif %}
         </h2>
+        <p class="lead">{{ viewed_user.person.bio }}
+            {% if viewed_user == user %}
+                <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#change-bio-modal">Edit bio</button>
+            {% endif %}
+        </p>
+        {% if viewed_user == user %}
+            <div class="modal fade" id="change-bio-modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Edit bio</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form method="post" action="{% url 'edit_bio' %}">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                                <textarea name="bio" maxlength="300" placeholder="Tell people something about you..."
+                                          class="w-100 form-control" rows="4" style="resize: none">{{ user.person.bio }}</textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
         {% if user.person in viewed_user.person.friends.all or viewed_user == user or mutual_friend_count and viewed_user.person.post_vis != 0 or viewed_user.person.post_vis == 2 %}
             {% if post_list %}
                 <p>{% if viewed_user == user %}Your{% else %}{{ viewed_user.first_name }}'s{% endif %} posts:</p>

@@ -10,6 +10,7 @@ class Person(models.Model):
     friends = models.ManyToManyField("self")
     notifications = models.JSONField()
     unread = models.PositiveIntegerField()
+    bio = models.TextField(max_length=300, default="")
 
     # post visibility
     POST_VIS_FRIENDS = '0'

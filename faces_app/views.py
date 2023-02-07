@@ -319,5 +319,12 @@ def get_notification(request):
         p.unread = 0
         p.save()
         return JsonResponse({"notification": p.notifications[-1]})
-
     return JsonResponse({"notification": False})
+
+
+def edit_bio(request):
+    bio = request.POST["bio"]
+    p = request.user.person
+    p.bio = bio
+    p.save()
+    return HttpResponseRedirect(reverse("user", args=[request.user.username]))
