@@ -36,3 +36,15 @@
     --bs-btn-hover-border-color: var(--bs-purple);
     --bs-btn-active-color: white;
 }
+.text-primary {
+    color: var(--bs-blue) !important
+}
+.text-warning {
+    color: var(--bs-yellow) !important
+}
+.text-success {
+    color: var(--bs-green) !important
+}
+.text-info {
+    color: var(--bs-purple) !important
+}
