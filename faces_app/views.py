@@ -6,6 +6,8 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from .forms import RegisterForm
 from django.templatetags.static import static
+from django.contrib import messages
+import requests
 
 
 def index(request):
@@ -42,7 +44,11 @@ def submit_post(request):
     content = request.POST["content"]
     author = request.user.person
     date = datetime.now()
-    post = Post(content=content, author=author, date=date)
+    image = request.POST["image"]
+    image_response = requests.head(image)
+    if image_response.headers.get("content-type")[:5] != "image":
+        return HttpResponseRedirect(reverse("index"))
+    post = Post(content=content, author=author, date=date, image=image)
     post.save()
     post.likeprofile_set.add(request.user.likeprofile)
     post.save()

@@ -54,6 +54,7 @@ class Post(models.Model):
     content = models.TextField()
     author = models.ForeignKey(Person, on_delete=models.CASCADE)
     date = models.DateTimeField()
+    image = models.CharField(max_length=512, default="")
 
 
 class Comment(models.Model):

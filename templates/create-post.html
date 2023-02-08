@@ -6,7 +6,8 @@
     <form method="post" action="{% url 'submit_post' %}" class="post-form text-center">
         {% csrf_token %}
         <h2>Write your post below:</h2>
-        <div class="container-sm form-group mx-5-sm my-3">
+        <div class="form-group mx-5-sm my-3">
+            <input type="text" name="image" class="form-control mb-3" placeholder="Enter image link...">
             <textarea name="content" id="id_content" class="form-control" rows="15" placeholder="What's happening?"
                       autofocus required style="resize: none"></textarea>
         </div>
