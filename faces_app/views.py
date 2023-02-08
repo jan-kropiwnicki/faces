@@ -6,7 +6,8 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from .forms import RegisterForm
 from django.templatetags.static import static
-from django.contrib import messages
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
 import requests
 
 
@@ -45,9 +46,17 @@ def submit_post(request):
     author = request.user.person
     date = datetime.now()
     image = request.POST["image"]
-    image_response = requests.head(image)
-    if image_response.headers.get("content-type")[:5] != "image":
+    val = URLValidator()
+    try:
+        val(image)
+    except ValidationError:
+        # TODO: add a danger message "The image URL is not a valid URL!"
         return HttpResponseRedirect(reverse("index"))
+    else:
+        image_response = requests.head(image)
+        if image_response.headers.get("content-type")[:5] != "image":
+            # TODO: add a danger message "The image URL is not a valid image!"
+            return HttpResponseRedirect(reverse("index"))
     post = Post(content=content, author=author, date=date, image=image)
     post.save()
     post.likeprofile_set.add(request.user.likeprofile)
