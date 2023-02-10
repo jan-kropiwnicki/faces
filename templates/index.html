@@ -10,6 +10,28 @@
 
 {% block content %}
     {% if user.is_authenticated %}
+        <style>
+            .post-content-col {
+                max-height: 200px;
+                position: relative;
+            }
+            .post-content-col-img:after {
+                content: "";
+                position: absolute;
+                z-index: 1;
+                bottom: 0;
+                left: 0;
+                pointer-events: none;
+                background-image: linear-gradient(to bottom,
+                                  rgba(var(--bs-light-rgb), 0),
+                                  rgba(var(--bs-light-rgb), 1) 100%);
+                width: 100%;
+                height: 4rem;
+            }
+            .post-see {
+                z-index: 2;
+            }
+        </style>
         <h2>Welcome, {{ user.first_name }}!</h2>
         {% for friend_request in friend_requests %}
             <p>
@@ -35,18 +57,29 @@
             </div>
         {% endif %}
         {% for post in post_list %}
-            <div id="{{ post.0.id }}" class="card bg-light my-3 p-3">
-                <p>Published on {{ post.0.date.date }} by
+            <div id="{{ post.0.id }}" class="card bg-light my-3 p-3 pb-0 overflow-hidden">
+                <p>
+                    Published on {{ post.0.date.date }} by
                     <img src="{% static post.0.author.user.profilepicture.url %}" alt="{{ post.0.author.user.username }}" class="rounded-circle mx-1" width="32" height="32">
                     <a href="{% url 'user' post.0.author.user.username %}">
-                    {{ post.0.author.user.first_name }} {{ post.0.author.user.last_name }}</a>
-                    @{{ post.0.author.user.username }}</p>
-                <p>
-                {% for line in post.1 %}
-                    {{ line }}<br>
-                {% endfor %}
+                    {{ post.0.author.user.first_name }} {{ post.0.author.user.last_name }}</a> @{{ post.0.author.user.username }}
                 </p>
-                <p class="lead text-primary mb-0">
+                <div class="row">
+                    {% if post.0.image %}
+                        <div style="background-image: url({{ post.0.image }}); background-size: cover; height: 200px" class="col-3 mx-3"></div>
+                    {% endif %}
+                    <div class="col post-content-col {% if post.0.image %}post-content-col-img{% endif %}">
+                        <div id="post-{{ post.0.id }}-content" class="post-content">
+                            {% for line in post.1 %}
+                                {{ line }}<br>
+                            {% endfor %}
+                        </div>
+                        <a href="{% url 'post_page' post.0.id %}"
+                           class="btn btn-secondary position-absolute start-50 top-100 translate-middle post-see"
+                           style="display: none" id="post-{{ post.0.id }}-see">See post</a>
+                    </div>
+                </div>
+                <p class="lead text-primary mb-0 pt-3 pb-3 bg-light" style="z-index: 1">
                     {% if user.likeprofile in post.0.likeprofile_set.all %}
                         <a id="like-{{ post.0.id }}" onclick="dislike_{{ post.0.id }}()"><i class="bi bi-star-fill"></i></a>
                     {% else %}
@@ -85,6 +118,9 @@
                             console.log(response.responseJSON.errors)
                         }
                     });
+                }
+                if ($("#post-{{ post.0.id }}-content").height() > 200) {
+                    $("#post-{{ post.0.id }}-see").css("display", "block");
                 }
             </script>
         {% endfor %}
