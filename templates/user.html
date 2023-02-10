@@ -109,9 +109,9 @@
                         <a href="{% url 'user' post.0.author.user.username %}">
                         {{ post.0.author.user.first_name }} {{ post.0.author.user.last_name }}</a> @{{ post.0.author.user.username }}
                     </p>
-                    <div class="row row-cols-1 row-cols-md-2">
+                    <div class="row row-cols-1 {% if post.0.image %}row-cols-md-2{% endif %}">
                         {% if post.0.image %}
-                            <div class="col-md-3 mx-md-3 post-img" style="background-image: url({{ post.0.image }})"></div>
+                            <div class="col-md-3 mx-md-3 post-img rounded" style="background-image: url({{ post.0.image }})"></div>
                         {% endif %}
                         <div class="col post-content-col">
                             <div id="post-{{ post.0.id }}-content" class="post-content">
