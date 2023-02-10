@@ -46,17 +46,18 @@ def submit_post(request):
     author = request.user.person
     date = datetime.now()
     image = request.POST["image"]
-    val = URLValidator()
-    try:
-        val(image)
-    except ValidationError:
-        # TODO: add a danger message "The image URL is not a valid URL!"
-        return HttpResponseRedirect(reverse("index"))
-    else:
-        image_response = requests.head(image)
-        if image_response.headers.get("content-type")[:5] != "image":
-            # TODO: add a danger message "The image URL is not a valid image!"
+    if image != '':
+        val = URLValidator()
+        try:
+            val(image)
+        except ValidationError:
+            # TODO: add a danger message "The image URL is not a valid URL!"
             return HttpResponseRedirect(reverse("index"))
+        else:
+            image_response = requests.head(image)
+            if image_response.headers.get("content-type")[:5] != "image":
+                # TODO: add a danger message "The image URL is not a valid image!"
+                return HttpResponseRedirect(reverse("index"))
     post = Post(content=content, author=author, date=date, image=image)
     post.save()
     post.likeprofile_set.add(request.user.likeprofile)
