@@ -27,6 +27,17 @@
             .post-see {
                 z-index: 2;
             }
+            .post-img {
+                background-size: cover;
+                height: 200px;
+            }
+            @media only screen and (max-width: 767px) {
+                .post-img {
+                    background-size: contain;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                }
+            }
         </style>
         <h2>
             <img src="{% static viewed_user.profilepicture.url %}" alt="{{ viewed_user.username }}" class="rounded-circle me-1" width="64" height="64">
@@ -95,33 +106,12 @@
                     <p>
                         Published on {{ post.0.date.date }} by
                         <img src="{% static post.0.author.user.profilepicture.url %}" alt="{{ post.0.author.user.username }}" class="rounded-circle mx-1" width="32" height="32">
-                        <a href="{% url 'user' viewed_user.username %}">
-                        {{ viewed_user.first_name }} {{ viewed_user.last_name }}</a> @{{ viewed_user.username }}
-                        {% if viewed_user == user %}&nbsp;<a href="{% url 'edit_post' post.0.id %}" class="lead text-secondary align-middle text-decoration-none">
-                            <i class="bi bi-pencil-square"></i></a>&nbsp;
-                            <a class="lead text-secondary align-middle text-decoration-none" data-bs-toggle="modal" data-bs-target="#deleteModal{{ post.0.id }}"
-                               style="cursor: pointer"><i class="bi bi-trash-fill"></i></a>
-                        {% endif %}
+                        <a href="{% url 'user' post.0.author.user.username %}">
+                        {{ post.0.author.user.first_name }} {{ post.0.author.user.last_name }}</a> @{{ post.0.author.user.username }}
                     </p>
-                    {% if viewed_user == user %}
-                        <div class="modal fade" tabindex="-1" role="dialog" id="deleteModal{{ post.0.id }}">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content rounded-3 shadow">
-                                    <div class="modal-body p-4 text-center">
-                                        <h5 class="mb-0">Are you sure?</h5>
-                                        <p class="mb-0">If you delete the post, you won't be able to bring it back</p>
-                                    </div>
-                                    <div class="modal-footer flex-nowrap p-0">
-                                        <a class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-end" href="{% url 'delete_post' post.0.id %}"><strong>Yes, I'm sure</strong></a>
-                                        <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">No, take me back</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                    <div class="row">
+                    <div class="row row-cols-1 row-cols-md-2">
                         {% if post.0.image %}
-                            <div style="background-image: url({{ post.0.image }}); background-size: cover; height: 200px" class="col-3 mx-3"></div>
+                            <div class="col-md-3 mx-md-3 post-img" style="background-image: url({{ post.0.image }})"></div>
                         {% endif %}
                         <div class="col post-content-col">
                             <div id="post-{{ post.0.id }}-content" class="post-content">
