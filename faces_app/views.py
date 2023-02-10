@@ -332,10 +332,9 @@ def change_post_visibility(request):
 def get_notification(request):
     p = request.user.person
     if p.unread:
-        p.unread = 0
+        p.unread -= 1
         p.save()
-        return JsonResponse({"notification": p.notifications[-1]})
-    return JsonResponse({"notification": False})
+    return JsonResponse({"notification": p.notifications})
 
 
 def edit_bio(request):
