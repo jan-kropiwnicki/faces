@@ -15,7 +15,7 @@
                 max-height: 200px;
                 position: relative;
             }
-            .post-content-col-img:after {
+            .post-content-col-long:after {
                 content: "";
                 position: absolute;
                 z-index: 1;
@@ -121,6 +121,7 @@
                 }
                 if ($("#post-{{ post.0.id }}-content").height() > 200) {
                     $("#post-{{ post.0.id }}-see").css("display", "block");
+                    $("#post-{{ post.0.id }}-content").parent().addClass("post-content-col-long");
                 }
             </script>
         {% endfor %}

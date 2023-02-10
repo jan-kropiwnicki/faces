@@ -11,7 +11,7 @@
                 max-height: 200px;
                 position: relative;
             }
-            .post-content-col-img:after {
+            .post-content-col-long:after {
                 content: "";
                 position: absolute;
                 z-index: 1;
@@ -123,7 +123,7 @@
                         {% if post.0.image %}
                             <div style="background-image: url({{ post.0.image }}); background-size: cover; height: 200px" class="col-3 mx-3"></div>
                         {% endif %}
-                        <div class="col post-content-col {% if post.0.image %}post-content-col-img{% endif %}">
+                        <div class="col post-content-col">
                             <div id="post-{{ post.0.id }}-content" class="post-content">
                                 {% for line in post.1 %}
                                     {{ line }}<br>
@@ -176,6 +176,7 @@
                     }
                     if ($("#post-{{ post.0.id }}-content").height() > 200) {
                         $("#post-{{ post.0.id }}-see").css("display", "block");
+                        $("#post-{{ post.0.id }}-content").parent().addClass("post-content-col-long");
                     }
                 </script>
             {% endfor %}
