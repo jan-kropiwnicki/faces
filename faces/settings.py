@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ei1#1vkf=y9q96brqbd8f0i465lsm-&-^cfp=koej!*@k3ih2%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["faces.infotech.edu.pl"]
+ALLOWED_HOSTS = ["faces.infotech.edu.pl", "10.192.192.100"]
 
 
 # Application definition
